@@ -1,36 +1,36 @@
 .video-player-container {
-    position: relative;
-    background: rgba(0, 0, 0);
-    width: 80vw;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  background: rgba(0, 0, 0);
+  width: 60vw;
+  display: flex;
+  justify-content: center;
 }
 
 .video-container {
-    height: 75vh;
+  height: 60vh;
 }
 
 .note-and-slider-container {
-    display: flex;
-    width: 90vw;
-    align-items: flex-start;
-    padding-top: 8px;
+  display: flex;
+  width: 90vw;
+  align-items: flex-start;
+  padding-top: 8px;
 }
 
 .slider-container {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 7px;
-    width: 300px;
-    padding: 10px;
-    font-family: "Open Sans", SemiBold;
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    align-self: right;
-    flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 7px;
+  width: 300px;
+  padding: 10px;
+  font-family: "Open Sans", SemiBold;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  align-self: right;
+  flex-shrink: 0;
 }
 
 .live-note-container {
-    position: relative;
-    top: -150px;
+  position: relative;
+  top: -150px;
 }

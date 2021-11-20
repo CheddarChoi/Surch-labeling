@@ -1,8 +1,6 @@
 .controlBar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: absolute;
+  display: flex;
   bottom: 5px;
   width: 100%;
   height: 55px;
@@ -17,12 +15,11 @@
 @media (max-width: 320px) {
   .controlBar {
     padding: 0px 4px;
- }
+  }
 }
 .controlBar .progressBar {
   position: relative;
-  margin-left: 20px;
-  top: -10px;
+  width: 100%;
   display: inline-block;
 }
 .controlBar .volume {
@@ -31,12 +28,11 @@
   margin-left: 20px;
 }
 .controlBar .text {
-  width: 35px;
   color: white;
-  font-size: 14px;
+  font-size: 12px;
 }
 .controlBar .endTime {
-  margin-left: 20px;
+  text-align: right;
 }
 .playWrapper {
   position: absolute;
@@ -71,4 +67,10 @@
   opacity: 1 !important;
   pointer-events: visible !important;
   transition: opacity 1s;
+}
+
+.timeDisplays {
+  /* margin-top: -10px; */
+  display: flex;
+  justify-content: space-between;
 }

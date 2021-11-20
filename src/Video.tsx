@@ -187,7 +187,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onLoadedMetadata={handleLoadedMDN}
           crossOrigin="Anonymous"
           style={{
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           <source src={videoSrc} type="video/mp4" />
@@ -217,7 +217,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
         </div>
         <NoteTaking
           ref={noteTakingRef}
-          userId={firebase.auth().currentUser? firebase.auth().currentUser?.email!.split("@")[0]!:"TestUser"}
+          userId={
+            firebase.auth().currentUser
+              ? firebase.auth().currentUser?.email!.split("@")[0]!
+              : "TestUser"
+          }
           nowPlaying={setNowPlaying}
           setIsFocused={seteditorIsFocused}
           setonEdit={setonEdit}

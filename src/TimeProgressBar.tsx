@@ -48,8 +48,10 @@ const TimeProgressBar: React.FC<TimeProps> = ({
     setstampPos(event.nativeEvent.offsetX - 20 + "px");
   }
   return (
-    <div className={styles.bar} style={{ width: percent }}>
-      {mouseIsOn && <ShowTime timestamp={timestamp} stampPos={stampPos} />}
+    <>
+      <div className={styles.bar} style={{ width: percent }}>
+        {mouseIsOn && <ShowTime timestamp={timestamp} stampPos={stampPos} />}
+      </div>
       <input
         onChange={(e) => {
           onChange(parseFloat(e.target.value));
@@ -67,11 +69,10 @@ const TimeProgressBar: React.FC<TimeProps> = ({
         value={percentNum}
         className={styles.controller}
         style={{
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       />
-      <br />
-    </div>
+    </>
   );
 };
 

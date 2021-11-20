@@ -1,5 +1,5 @@
 .bgBar {
-  width: 65vw;
+  width: 100%;
   height: 10px;
   background-color: gray;
   border-radius: 1.5px;
@@ -12,17 +12,17 @@
   background-color: rgba(0, 164, 168, 1);
   border-radius: 1.5px;
 }
-.bar .controller {
+.controller {
   -webkit-appearance: none !important;
   position: absolute;
-  top: 4px;
+  top: 24px;
   margin: 0;
-  width: 65vw;
+  width: 100%;
   height: 3px;
   background-color: transparent;
   border-radius: 1.5px;
 }
-.bar .controller::-webkit-slider-thumb {
+.controller::-webkit-slider-thumb {
   -webkit-appearance: none !important;
   width: 18px;
   height: 18px;
@@ -32,19 +32,20 @@
   background-color: white;
 }
 
-.timestamp{
+.timestamp {
   position: absolute;
   top: 12px;
   height: 15px;
   width: 60px;
   background-color: rgba(255, 255, 255, 0);
+  font-size: 12px;
 }
 
 .stepContainer {
   display: flex;
   top: 10px;
   height: 20px;
-  width: 65vw;
+  width: 100%;
   align-items: center;
   background-color: rgba(160, 160, 160, 0.616);
   /* justify-content: space-between; */

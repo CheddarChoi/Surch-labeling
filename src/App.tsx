@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
 import NoteCollection from "./note-collection";
-import { Button, Drawer, IconButton } from "@material-ui/core";
-import { Menu, ChevronRight, ChevronLeft } from "@material-ui/icons";
+import { Drawer, IconButton } from "@material-ui/core";
+import { ChevronRight, ChevronLeft } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from "./VideoElementContext";
+import Header from "./components/Header";
 
 const drawerWidth = 360;
 

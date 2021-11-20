@@ -1,7 +1,6 @@
 import React, { useState, memo } from "react";
 import classNames from "classnames";
 
-
 import ProgressBar from "./ProgressBar";
 
 import styles from "./controlbar.module.css";
@@ -28,7 +27,6 @@ const Controlbar: React.FC<IProps> = ({
   onProgressChange,
   onPlayIconClick,
   totalTime,
-
   startTime,
   showControl,
   nowPlaying,
@@ -42,6 +40,7 @@ const Controlbar: React.FC<IProps> = ({
   const controlBarClassProps = classNames(styles.controlBar, {
     [styles.fadeIn]: showControl,
   });
+  const timeDisplays = classNames(styles.timeDisplays);
   const startTimeClassProps = classNames(styles.text, styles.startTime);
   const endTimeClassProps = classNames(styles.text, styles.endTime);
   const videoTime = useSelector(
@@ -85,24 +84,29 @@ const Controlbar: React.FC<IProps> = ({
   return (
     <>
       <div className={controlBarClassProps}>
-        <span className={startTimeClassProps}>{(videoTime!=null) ? toTimeString(videoTime) : toTimeString(0)}</span>
-        <ProgressBar
-          max={totalTime}
-          className={styles.progressBar}
-          onChange={onProgressChange}
-          onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}
-          videoElement={videoElement}
-        />
-        <span className={endTimeClassProps}>{toTimeString(totalTime)}</span>
-        &nbsp;
+        <div style={{ flex: "1" }}>
+          <ProgressBar
+            max={totalTime}
+            className={styles.progressBar}
+            onChange={onProgressChange}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+            videoElement={videoElement}
+          />
+          <div className={timeDisplays}>
+            <span className={startTimeClassProps}>
+              {videoTime != null ? toTimeString(videoTime) : toTimeString(0)}
+            </span>
+            <span className={endTimeClassProps}>{toTimeString(totalTime)}</span>
+          </div>
+        </div>
         <img
           className={styles.volume}
           src={volumeClicked ? volumeIcon : muteIcon}
           onClick={handleVolume}
           alt={""}
           style={{
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         />
       </div>

@@ -33,7 +33,6 @@ const ProgressBar: React.FC<IProps> = ({
 
   const firstStep = 120;
   const secondStep = 90;
- 
 
   return (
     <div className={classProps}>
@@ -51,7 +50,7 @@ const ProgressBar: React.FC<IProps> = ({
               Second Step</span>
         </div> */}
         <div>
-          <NoteIcon max={max} onChange={onChange}/>
+          <NoteIcon max={max} onChange={onChange} />
         </div>
       </div>
 
@@ -61,7 +60,6 @@ const ProgressBar: React.FC<IProps> = ({
           onChange={onChange}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
-          
         />
       </div>
     </div>
