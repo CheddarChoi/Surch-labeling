@@ -39,7 +39,12 @@ const Labels: React.FC<IProps> = (props) => {
       const document = collection.doc(docid);
       document
         .update({ label: label })
-        .then(dispatch(setSegmentListFromDB("testvideo1")));
+        .then(() => {
+          dispatch(setSegmentListFromDB("testvideo1"));
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
     }
   };
 
@@ -50,8 +55,8 @@ const Labels: React.FC<IProps> = (props) => {
   return (
     <div className="label-container">
       <h1 style={{ textAlign: "center" }}>
-        Map labels for each video part/segment
-      ,m</h1>
+        Map labels for each video part/segment ,m
+      </h1>
       <div className="labels">
         {labels.map((l) => (
           <div

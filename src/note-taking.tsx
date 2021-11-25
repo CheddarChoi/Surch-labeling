@@ -113,6 +113,7 @@ const NoteTaking = React.forwardRef(
     };
 
     const submitNote = () => {
+      console.log("Submit Note to DB");
       const noteCollection = db
         .collection("videos")
         .doc("testvideo1")

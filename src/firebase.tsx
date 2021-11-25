@@ -22,7 +22,18 @@ const firebaseConfig = {
   measurementId: "G-0MG5CWS0WD",
 };
 
-firebase.initializeApp(firebaseConfig);
+const firebaseConfig2 = {
+  apiKey: "AIzaSyDF-WnJ8tpns_uBQABDdauZmaTsvkwHJ-8",
+  authDomain: "kixlab-surch-music.firebaseapp.com",
+  projectId: "kixlab-surch-music",
+  storageBucket: "kixlab-surch-music.appspot.com",
+  messagingSenderId: "573754089129",
+  appId: "1:573754089129:web:009d3feb7fe860e7e853b8",
+  measurementId: "G-C7KXD5505L",
+};
+
+// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig2);
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
 // export const firestore = firebase.firestore();

@@ -131,35 +131,8 @@
   padding-top: 3pt;
 }
 
-/* step별 툴팁
-
-.step .tooltip {
-  visibility: hidden;
-  width: 100px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 2px 10px;
-  border-radius: 6px;
- 
-  position: absolute;
-  z-index: 1;
-
-  bottom: 130%;
-  left: 50%;
+.zoomRange {
+  display: flex;
+  justify-content: space-between;
+  color: black;
 }
-
-.step:hover .tooltip {
-  visibility: visible;
-}
-
-.step .tooltip::after {
-  content: " ";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: black transparent transparent transparent;
-} */

@@ -12,28 +12,37 @@ export const setCollection = (collection: any[]) => ({
   },
 });
 
-export const setCollectionFromDB = (
-  videoName: string,
-  videoDuration: number
-) => (dispatch: Dispatch<setCollectionAction>) => {
-  const collection: any = [];
-  const category: any = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
-  const ref = db
-    .collection("videos")
-    .doc(videoName)
-    .collection("note")
-    .orderBy("videoTimestamp");
-  ref.get().then((snap) => {
-    snap.forEach((doc) => {
-      if ((doc.data().videoTimestamp < videoDuration) &&
-          (category.indexOf(doc.data().category) > -1) &&
-          ((doc.data().userId===firebase.auth().currentUser?.email?.split("@")[0]! ||
-          doc.data().userId === "dummy_example" )))
-        collection.push(doc.data());
+export const setCollectionFromDB =
+  (videoName: string, videoDuration: number) =>
+  (dispatch: Dispatch<setCollectionAction>) => {
+    const collection: any = [];
+    const category: any = [
+      "Challenging",
+      "Skill",
+      "Distinctive",
+      "Opportunity",
+      "Others",
+    ];
+    console.log("Get Collection from DB");
+    const ref = db
+      .collection("videos")
+      .doc(videoName)
+      .collection("note")
+      .orderBy("videoTimestamp");
+    ref.get().then((snap) => {
+      snap.forEach((doc) => {
+        if (
+          doc.data().videoTimestamp < videoDuration &&
+          category.indexOf(doc.data().category) > -1 &&
+          (doc.data().userId ===
+            firebase.auth().currentUser?.email?.split("@")[0]! ||
+            doc.data().userId === "dummy_example")
+        )
+          collection.push(doc.data());
+      });
+      dispatch(setCollection(collection));
     });
-    dispatch(setCollection(collection));
-  });
-};
+  };
 
 type setCollectionAction = ReturnType<typeof setCollection>;
 

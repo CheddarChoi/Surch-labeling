@@ -14,7 +14,7 @@ export const setList = (list: any[]) => ({
 
 export const setSegmentListFromDB =
   (videoName: string) => (dispatch: Dispatch<setListAction>) => {
-    console.log("Reload segment list from DB");
+    console.log("Get segment list from DB");
     const collection: any = [];
     const ref = db
       .collection("videos")
@@ -25,6 +25,7 @@ export const setSegmentListFromDB =
       snap.forEach((doc) => {
         collection.push(Object.assign({}, { id: doc.id }, doc.data()));
       });
+      // console.log(collection);
       dispatch(setList(collection));
     });
   };
