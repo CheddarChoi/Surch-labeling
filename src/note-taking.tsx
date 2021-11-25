@@ -132,7 +132,6 @@ const NoteTaking = React.forwardRef(
           .putString(baseCanvas.toDataURL(), "data_url")
           .then((snapshot) =>
             snapshot.ref.getDownloadURL().then((downloadURL) => {
-              console.log("download:    ", downloadURL);
               noteCollection.add({
                 category: noteCategory,
                 content: editorState.getCurrentContent().getPlainText("\u0001"),

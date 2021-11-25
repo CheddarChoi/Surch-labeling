@@ -1,95 +1,64 @@
-import React, { useState, useEffect, useRef, createRef } from "react";
-import firebase from "./firebase";
-import { Button, Tag, Space } from "antd";
-import { LikeOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useRef } from "react";
+
+import { Space } from "antd";
 import "./note-collection.css";
-// import { LeakAddTwoTone } from "@material-ui/icons";
+
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
-import { ViewArrayOutlined } from "@material-ui/icons";
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
-import StarIcon from '@material-ui/icons/Star';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import WarningIcon from '@material-ui/icons/Warning';
-import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
-import FlagIcon from '@material-ui/icons/Flag';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import HelpIcon from '@material-ui/icons/Help';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { purple } from '@material-ui/core/colors';
-import Tooltip from '@material-ui/core/Tooltip';
+
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import StarBorderSharpIcon from "@material-ui/icons/StarBorderSharp";
+import StarIcon from "@material-ui/icons/Star";
+import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import WarningIcon from "@material-ui/icons/Warning";
+import EmojiObjectsOutlinedIcon from "@material-ui/icons/EmojiObjectsOutlined";
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
+import FlagIcon from "@material-ui/icons/Flag";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import HelpIcon from "@material-ui/icons/Help";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const toTimeString = (seconds: number) => {
   return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
 };
 
-const { CheckableTag } = Tag;
 interface noteCollectionProps {}
-const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
-const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
-                         <StarIcon style={{ color: '#4791db' }}/>,
-                         <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
-                         <WarningIcon style={{ color: '#59af28' }}/>,
-                         <HelpIcon style={{ color: '#bdbdbd' }}/>];
-const tagsIcon = [<FlagOutlinedIcon />, <StarBorderSharpIcon />, <EmojiObjectsOutlinedIcon />, <ReportProblemOutlinedIcon />, <HelpOutlineIcon />];
-const tagsColor:Array<any> = ["primary","secondary","error","warning","success"]
-// const { Header, Footer, Sider, Content } = Layout;
-
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: {
-//       // Purple and green play nicely together.
-//       main: '#e33371',
-//     },
-//     secondary: {
-//       // This is green.A700 as hex.
-//       main: '#4791db',
-//     },
-//     error: {
-//       // This is green.A700 as hex.
-//       main: '#ffb74d',
-//     },
-//     warning: {
-//       // This is green.A700 as hex.
-//       main: '#11cb5f',
-//     },
-//     success: {
-//       // This is green.A700 as hex.
-//       main: '#11cb5f',
-//     },
-//   },
-// });
-
+const tagsData = [
+  "Challenging",
+  "Skill",
+  "Distinctive",
+  "Opportunity",
+  "Others",
+];
+const tagsCheckedIcon = [
+  <FlagIcon style={{ color: "#f44336" }} />,
+  <StarIcon style={{ color: "#4791db" }} />,
+  <EmojiObjectsIcon style={{ color: "#ffc107" }} />,
+  <WarningIcon style={{ color: "#59af28" }} />,
+  <HelpIcon style={{ color: "#bdbdbd" }} />,
+];
+const tagsIcon = [
+  <FlagOutlinedIcon />,
+  <StarBorderSharpIcon />,
+  <EmojiObjectsOutlinedIcon />,
+  <ReportProblemOutlinedIcon />,
+  <HelpOutlineIcon />,
+];
 
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
-  // const ref = db
-  //   .collection("videos")
-  //   .doc("testvideo1")
-  //   .collection("note")
-  //   .orderBy("videoTimestamp");
-  // var unsubscribe = null;
-  // const [collection, setCollection] = useState<any[]>([]);
-  // const [rightOpen, setRightOpen] = useState(true);
   const collection = useSelector(
     (state: RootState) => state.setNoteCollection.noteCollection
   );
 
   const [filter, setFilter] = useState<string[]>(tagsData);
-  const [filteredCollection, setFilteredCollection] = useState<any[]>(
-    collection
-  );
-  // const [noteLayout, setNoteLayout] = useState<any[]>();
+  const [filteredCollection, setFilteredCollection] =
+    useState<any[]>(collection);
   const refList = useRef<any[]>([]);
   const { videoElement } = useVideoElement()!;
 
@@ -106,25 +75,9 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   };
 
   const [prevFocusedTime, setPrevFocusedTime] = useState<number>(0);
-  // var originalCollection = null;
-  // console.log(videoTime)
 
   useEffect(() => {
-    // const unsubscribe = ref.onSnapshot((snap) => {
-    //   if (collection.length === 0) {
-    //     const _collection: any = [];
-    //     snap.forEach((doc: any) => {
-    //       _collection.push(doc.data());
-    //     });
-    //     setCollection(_collection);
-    //     setFilteredCollection(_collection);
-    //     console.log("onCollectionUpdate", _collection);
-    //   }
-    // });
     dispatch(setCollectionFromDB("testvideo1", videoDTime));
-    // setFilteredCollection(collection);
-
-    // console.log("inUseEffect", videoDTime);
   }, [dispatch, videoDTime]);
 
   useEffect(() => {
@@ -145,18 +98,13 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     videoElement.currentTime = time;
   };
   const Notecomponent = ({ note }: any) => {
-    const [likes, setLikes] = useState(0);
     const videoTime_num: number = note.videoTimestamp;
     const noteCategory: string = note.category;
     const noteCategoryList: string[] = noteCategory.split(" ");
-    const noteCategoryClassName: string = noteCategoryList[
-      noteCategoryList.length - 1
-    ].toLowerCase();
+    const noteCategoryClassName: string =
+      noteCategoryList[noteCategoryList.length - 1].toLowerCase();
     const time_str: string = toTimeString(videoTime_num);
 
-    const onClickLikeButton = () => {
-      setLikes((prev) => prev + 1);
-    };
     return (
       <>
         <div className="notecategory">
@@ -166,17 +114,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
           </div>
         </div>
         <div className="singlenote">
-          <b className="noteheader">
-            {note.userId}
-            {/* <div style={{fontWeight: "normal", color: "rgb(4, 22, 54)", position: "relative", marginLeft: "180px"}}>{likes}</div>
-            <Button
-              type="primary"
-              shape="round"
-              icon={<LikeOutlined />}
-              size="small"
-              onClick={onClickLikeButton}
-            /> */}
-          </b>
+          <b className="noteheader">{note.userId}</b>
           {note.content}
           <br />
           {note.downloadURL && (
@@ -201,11 +139,10 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
 
       if (abs < min) {
         min = abs; //MIN
-        // near = data[i] //near : 가까운값
         refIndex = i;
       }
     }
-    // console.log("InCheckClosest", videoTime,data,currentTime,near,refIndex);
+
     if (refList.current[refIndex]) {
       refList.current[refIndex].scrollIntoView({
         behavior: "smooth",
@@ -219,15 +156,6 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     checkClosest(videoTime);
     setPrevFocusedTime(videoTime);
   }
-
-  // const onCollectionUpdate = (querySnapshot: any) => {
-  //   const _collection: any = [];
-  //   querySnapshot.forEach((doc: any) => {
-  //     _collection.push(doc.data());
-  //   });
-  //   setCollection(_collection);
-  //   console.log("onCollectionUpdate", _collection);
-  // };
 
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked
@@ -244,7 +172,6 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
         return false;
       }
     });
-    // setFilteredCollection(_filteredCollection);
     console.log("FILT ;", nextSelectedTags, _filteredCollection);
     return _filteredCollection;
   };
@@ -253,30 +180,30 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     <div>
       <div className="coll-category">
         <Space align="center" size="small">
-        &nbsp;{"Show only"}
-        <FormGroup row>
-        {tagsData.map((tag) => (
-          <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
-          <FormControlLabel
-            className="category-entry"
-            control={
-              <Checkbox
-                icon={tagsIcon[tagsData.indexOf(tag)]}
-                checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
-                checked={filter.indexOf(tag) > -1}
-                onChange={(checked) => {
-                  setFilteredCollection(handleChange(tag, checked.target.checked))
-                }}
-                
-                // color={"primary"}
-                //{<span style={{ fontSize: '0.9rem' }}>{tag}</span>}
-                name={tag}
-              />}
-            label=""
-          />
-          </Tooltip>
-        ))}
-        </FormGroup>
+          &nbsp;{"Show only"}
+          <FormGroup row>
+            {tagsData.map((tag) => (
+              <Tooltip title={<h2 style={{ color: "white" }}>{tag}</h2>} arrow>
+                <FormControlLabel
+                  className="category-entry"
+                  control={
+                    <Checkbox
+                      icon={tagsIcon[tagsData.indexOf(tag)]}
+                      checkedIcon={tagsCheckedIcon[tagsData.indexOf(tag)]}
+                      checked={filter.indexOf(tag) > -1}
+                      onChange={(checked) => {
+                        setFilteredCollection(
+                          handleChange(tag, checked.target.checked)
+                        );
+                      }}
+                      name={tag}
+                    />
+                  }
+                  label=""
+                />
+              </Tooltip>
+            ))}
+          </FormGroup>
         </Space>
       </div>
       <div className="collection">

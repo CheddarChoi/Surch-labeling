@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
+import Labels from "./Labels";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
 import LiveNote from "./live-note";
@@ -11,6 +12,7 @@ import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setDTime } from "./redux/modules/videoDuration";
 import firebase from "firebase";
+import Segment from "./Segment";
 
 interface IProps {
   className?: string;
@@ -215,9 +217,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             setIsFocused={seteditorIsFocused}
             setonEdit={setonEdit}
           />
+          <Labels />
         </div>
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>
+      <Segment />
       <div className="note-and-slider-container">
         <div className="slider-container">
           Video Speed

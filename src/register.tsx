@@ -65,20 +65,20 @@ const Register: React.FC<RegisterProps> = (props) => {
       <h2 style={styles.margin}>Register your account</h2>
       {error && <p className="error-message">{error.message}</p>}
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          value={username}
-          onChange={handleChange}
-        />
         <label htmlFor="email">Email address</label>
         <input
           type="text"
           name="email"
           id="email"
           value={email}
+          onChange={handleChange}
+        />
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          value={username}
           onChange={handleChange}
         />
         <label htmlFor="password">Choose a password</label>

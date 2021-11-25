@@ -1,0 +1,28 @@
+.segment-container {
+  width: 100%;
+  margin-top: 20px;
+
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.surch-segment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+
+  background: #c2c2c2;
+  box-shadow: 0 0 0 1px #4c4b4a inset;
+
+  border-radius: 8px;
+  cursor: pointer;
+}
+.surch-segment.selected {
+  box-shadow: 0 0 0 3px #0c73ec inset;
+}
+
+.segment-name {
+  text-align: center;
+  font-weight: bold;
+}

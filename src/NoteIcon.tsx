@@ -1,43 +1,21 @@
-import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import styles from "./progressBar.module.css";
-import {
-  EnvironmentFilled,
-  BulbFilled,
-  LikeFilled,
-  AlertFilled,
-  QuestionCircleFilled,
-  PlusCircleFilled,
-} from "@ant-design/icons";
+import StarIcon from "@material-ui/icons/Star";
+import WarningIcon from "@material-ui/icons/Warning";
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
+import FlagIcon from "@material-ui/icons/Flag";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 
-import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
-import StarIcon from '@material-ui/icons/Star';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import WarningIcon from '@material-ui/icons/Warning';
-import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
-import FlagIcon from '@material-ui/icons/Flag';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import HelpIcon from '@material-ui/icons/Help';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-
-import { ReplyRounded } from "@material-ui/icons";
-import firebase from "./firebase";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "./redux/modules";
-import LiveNote from "./live-note"
-
-var db = firebase.firestore();
 
 interface NoteIconProps {
   max: number;
   onChange: (progress: number) => void;
-
 }
 
-const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
+const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
@@ -73,7 +51,6 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
   const [showLiveNote, setshowLiveNote] = useState(true);
 
   const NoteBubble = ({ note }: any) => {
-    
     const [size, setsize] = useState("20px");
     const videoTime_num: number = note.videoTimestamp;
     const [showNote, setshowNote] = useState(false);
@@ -122,7 +99,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
             bottom: "10px",
             fontSize: size,
             color: bubblecolor,
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         />
         {showNote && <ShowNote note={note} />}
@@ -132,13 +109,13 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
   function Icon(category: any) {
     switch (category.category) {
       case "Challenging":
-        return <FlagIcon style={{ color: '#f44336' }}/>;
+        return <FlagIcon style={{ color: "#f44336" }} />;
       case "Skill":
-        return <StarIcon style={{ color: '#4791db' }}/>;
+        return <StarIcon style={{ color: "#4791db" }} />;
       case "Distinctive":
-        return <EmojiObjectsIcon style={{ color: '#ffc107' }}/>;
+        return <EmojiObjectsIcon style={{ color: "#ffc107" }} />;
       case "Opportunity":
-        return <WarningIcon style={{ color: '#59af28' }}/>;
+        return <WarningIcon style={{ color: "#59af28" }} />;
       default:
         return <MoreHorizIcon style={{ fontSize: "20px", color: "#FFFFFF" }} />;
     }
@@ -154,7 +131,6 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange}) => {
         <div className={styles.livenotecontent}>
           <div>{note.content}</div>
         </div>
-        
       </div>
     );
   };
