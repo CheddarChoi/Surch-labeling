@@ -23,15 +23,15 @@ import { RootState } from "./redux/modules";
 import { useVideoElement } from "./VideoElementContext";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
-import StarBorderSharpIcon from '@material-ui/icons/StarBorderSharp';
-import StarIcon from '@material-ui/icons/Star';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import WarningIcon from '@material-ui/icons/Warning';
-import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
-import FlagIcon from '@material-ui/icons/Flag';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import StarBorderSharpIcon from "@material-ui/icons/StarBorderSharp";
+import StarIcon from "@material-ui/icons/Star";
+import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import WarningIcon from "@material-ui/icons/Warning";
+import EmojiObjectsOutlinedIcon from "@material-ui/icons/EmojiObjectsOutlined";
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
+import FlagIcon from "@material-ui/icons/Flag";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 var db = firebase.firestore();
 var storage = firebase.storage();
@@ -41,13 +41,21 @@ interface noteTakingProps {
   setIsFocused: any;
   setonEdit: any;
 }
-const tagsCheckedIcon = [<FlagIcon style={{ color: '#f44336' }}/>,
-                         <StarIcon style={{ color: '#4791db' }}/>,
-                         <EmojiObjectsIcon style={{ color: '#ffc107' }}/>,
-                         <WarningIcon style={{ color: '#59af28' }}/>,
-                         <MoreHorizIcon style={{ color: '#bdbdbd' }}/>];
+const tagsCheckedIcon = [
+  <FlagIcon style={{ color: "#f44336" }} />,
+  <StarIcon style={{ color: "#4791db" }} />,
+  <EmojiObjectsIcon style={{ color: "#ffc107" }} />,
+  <WarningIcon style={{ color: "#59af28" }} />,
+  <MoreHorizIcon style={{ color: "#bdbdbd" }} />,
+];
 
-const tagsData = ["Challenging", "Skill", "Distinctive", "Opportunity", "Others"];
+const tagsData = [
+  "Challenging",
+  "Skill",
+  "Distinctive",
+  "Opportunity",
+  "Others",
+];
 
 type CountdownHandle = {
   clearEditor: () => void;
@@ -134,11 +142,10 @@ const NoteTaking = React.forwardRef(
                 downloadURL: downloadURL,
               });
             })
-          ).then(
-            () => {
-              dispatch(setCollectionFromDB("testvideo1", videoDTime))
-            }
-          );
+          )
+          .then(() => {
+            dispatch(setCollectionFromDB("testvideo1", videoDTime));
+          });
 
         message.success(
           "The note is saved at " +
@@ -146,18 +153,18 @@ const NoteTaking = React.forwardRef(
             " along with the screenshot."
         );
       } else {
-        noteCollection.add({
-          category: noteCategory,
-          content: editorState.getCurrentContent().getPlainText("\u0001"),
-          //timestamp: "",
-          userId: props.userId,
-          videoTimestamp: videoTime,
-          downloadURL: "",
-        }).then(
-          () => {
-            dispatch(setCollectionFromDB("testvideo1", videoDTime))
-          }
-        );;
+        noteCollection
+          .add({
+            category: noteCategory,
+            content: editorState.getCurrentContent().getPlainText("\u0001"),
+            //timestamp: "",
+            userId: props.userId,
+            videoTimestamp: videoTime,
+            downloadURL: "",
+          })
+          .then(() => {
+            dispatch(setCollectionFromDB("testvideo1", videoDTime));
+          });
         message.success("The note is saved at " + toTimeString(videoTime));
       }
       seteditorState(
@@ -218,37 +225,39 @@ const NoteTaking = React.forwardRef(
               defaultValue="Challenging"
             >
               <Radio.Button className="category-entry" value="Challenging">
-                <Space align="center" >
-                  <FlagIcon style={{ color: '#f44336' }}/>
+                <div className="buttonIcon">
+                  <FlagIcon style={{ color: "#f44336", margin: "auto" }} />
                   Challenging
-                </Space>
+                </div>
               </Radio.Button>
               <Radio.Button className="category-entry" value="Skill">
-                <Space align="center" >
-                  <StarIcon style={{ color: '#4791db' }}/>
+                <div className="buttonIcon">
+                  <StarIcon style={{ color: "#4791db", margin: "auto" }} />
                   Skill
-                </Space>
+                </div>
               </Radio.Button>
               <Radio.Button className="category-entry" value="Distinctive">
-                <Space align="center" >
-                  <EmojiObjectsIcon style={{ color: '#ffc107' }}/>
+                <div className="buttonIcon">
+                  <EmojiObjectsIcon
+                    style={{ color: "#ffc107", margin: "auto" }}
+                  />
                   Distinctive
-                </Space>
+                </div>
               </Radio.Button>
               <Radio.Button className="category-entry" value="Opportunity">
-                <Space align="center" >
-                  <WarningIcon style={{ color: '#59af28' }}/>
+                <div className="buttonIcon">
+                  <WarningIcon style={{ color: "#59af28", margin: "auto" }} />
                   Opportunity
-                </Space>
+                </div>
               </Radio.Button>
               <Radio.Button className="category-entry" value="Others">
-                <Space align="center" >
-                  <MoreHorizIcon style={{ color: '#bdbdbd' }}/>
+                <div className="buttonIcon">
+                  <MoreHorizIcon style={{ color: "#bdbdbd", margin: "auto" }} />
                   <span>Others</span>
-                </Space>
+                </div>
               </Radio.Button>
             </Radio.Group>
-            <Button
+            {/* <Button
               type="primary"
               shape="round"
               icon={<PictureOutlined />}
@@ -262,7 +271,7 @@ const NoteTaking = React.forwardRef(
               }}
             >
               Capture and Draw
-            </Button>
+            </Button> */}
           </div>
           <div className="draft-root">
             <Editor
@@ -289,7 +298,7 @@ const NoteTaking = React.forwardRef(
           </div>
         </div>
 
-        <div className="note-taking-container">
+        {/* <div className="note-taking-container">
           {showCanvas && (
             <div className="screenshot-editor-container">
               <div className="screenshot-picture-container">
@@ -395,7 +404,7 @@ const NoteTaking = React.forwardRef(
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }

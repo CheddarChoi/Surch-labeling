@@ -7,7 +7,6 @@ import { Drawer, IconButton } from "@material-ui/core";
 import { ChevronRight, ChevronLeft } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from "./VideoElementContext";
-import Header from "./components/Header";
 
 const drawerWidth = 360;
 

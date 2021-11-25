@@ -1,57 +1,62 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .draft-root {
-    margin-left: 3%;
-    margin-right: 3%;
-    background: #fff;
-    border: 1px solid rgb(75, 30, 30);
-    font-family: "Open Sans", SemiBold;
-    font-size: 16px;
-    padding: 15px;
-    text-align: right;
-    width: 54vw;
+  margin-left: 3%;
+  margin-right: 3%;
+  background: #fff;
+  border: 1px solid rgb(75, 30, 30);
+  font-family: "Open Sans", SemiBold;
+  font-size: 16px;
+  padding: 15px;
+  text-align: right;
+  width: 100%;
 }
 
 .category-group {
-    margin-left: 3%;
-    margin-right: 3%;
-    font-family: "Open Sans", SemiBold;
-    font-size: 16px;
+  margin-left: 3%;
+  margin-right: 3%;
+  font-family: "Open Sans", SemiBold;
+  font-size: 16px;
 }
 
 .screenshot-editor-container {
-    background: rgba(50, 50, 50, 0.8);
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 15px;
+  background: rgba(50, 50, 50, 0.8);
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 15px;
 }
 
 .note-taking-container {
-    text-align: center;
-    display: flex;
-    position: absolute;
-    top: 6vh;
-    left: 50vw;
-    z-index: 10;
+  text-align: center;
+  display: flex;
+  position: absolute;
+  top: 6vh;
+  left: 50vw;
+  z-index: 10;
 }
 
 .screenshot-picture-container {
-    border-top: 4px solid rgb(238, 222, 5);
-    border-left: 4px solid rgb(238, 222, 5);
-    border-bottom: 4px solid rgb(238, 222, 5);
+  border-top: 4px solid rgb(238, 222, 5);
+  border-left: 4px solid rgb(238, 222, 5);
+  border-bottom: 4px solid rgb(238, 222, 5);
 }
 
 .lineweight-container {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 7px;
-    width: 300px;
-    padding: 10px;
-    margin-top: 5px;
-    margin-left: 25%;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 7px;
+  width: 300px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-left: 25%;
 }
 
 .note-header {
-    width: 70vw;
+  width: 100%;
+}
+
+.buttonIcon {
+  font-size: small;
+  display: flex;
 }

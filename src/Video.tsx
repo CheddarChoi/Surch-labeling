@@ -171,36 +171,51 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   return (
-    <div>
-      <div
-        className="video-player-container"
-        onMouseEnter={setControlVisible}
-        onMouseLeave={setControlInvisible}
-      >
-        <video
-          className="video-container"
-          loop={false}
-          muted={true}
-          ref={ref}
-          playsInline={true}
-          onClick={onPlayIconClick}
-          onLoadedMetadata={handleLoadedMDN}
-          crossOrigin="Anonymous"
-          style={{
-            cursor: "pointer",
-          }}
+    <>
+      <div className="video-and-label-container">
+        <div
+          className="video-player-container"
+          onMouseEnter={setControlVisible}
+          onMouseLeave={setControlInvisible}
         >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-        <Controlbar
-          onProgressChange={onProgressChange}
-          onPlayIconClick={onPlayIconClick}
-          totalTime={totalTime}
-          startTime={startTime}
-          showControl={showControl}
-          nowPlaying={nowPlaying}
-          videoElement={videoElement}
-        />
+          <video
+            className="video-container"
+            loop={false}
+            muted={true}
+            ref={ref}
+            playsInline={true}
+            onClick={onPlayIconClick}
+            onLoadedMetadata={handleLoadedMDN}
+            crossOrigin="Anonymous"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+          <Controlbar
+            onProgressChange={onProgressChange}
+            onPlayIconClick={onPlayIconClick}
+            totalTime={totalTime}
+            startTime={startTime}
+            showControl={showControl}
+            nowPlaying={nowPlaying}
+            videoElement={videoElement}
+          />
+        </div>
+        <div className="label-or-note">
+          <NoteTaking
+            ref={noteTakingRef}
+            userId={
+              firebase.auth().currentUser
+                ? firebase.auth().currentUser?.email!.split("@")[0]!
+                : "TestUser"
+            }
+            nowPlaying={setNowPlaying}
+            setIsFocused={seteditorIsFocused}
+            setonEdit={setonEdit}
+          />
+        </div>
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>
       <div className="note-and-slider-container">
@@ -215,19 +230,8 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             onChange={(value: any) => setPlaybackRate(value)}
           />
         </div>
-        <NoteTaking
-          ref={noteTakingRef}
-          userId={
-            firebase.auth().currentUser
-              ? firebase.auth().currentUser?.email!.split("@")[0]!
-              : "TestUser"
-          }
-          nowPlaying={setNowPlaying}
-          setIsFocused={seteditorIsFocused}
-          setonEdit={setonEdit}
-        />
       </div>
-    </div>
+    </>
   );
 };
 
