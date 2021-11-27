@@ -87,7 +87,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   useEffect(() => {
     if (filteredCollection) {
       refList.current = refList.current.slice(0, filteredCollection.length);
-      console.log(refList, filteredCollection);
+      // console.log(refList, filteredCollection);
     }
   }, [collection, filteredCollection]);
 

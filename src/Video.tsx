@@ -13,6 +13,7 @@ import { setTime } from "./redux/modules/videoTime";
 import { setDTime } from "./redux/modules/videoDuration";
 import firebase from "firebase";
 import Segment from "./Segment";
+import { setRange } from "./redux/modules/zoomRange";
 
 interface IProps {
   className?: string;
@@ -48,8 +49,9 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   const startTime = Math.floor(videoTime);
   const handleLoadedMDN = (e: any) => {
     setTotalTime(e.target.duration);
-    console.log(e.target.duration);
+    // console.log(e.target.duration);
     dispatch(setDTime(e.target.duration));
+    dispatch(setRange(0, e.target.duration));
   };
   // 동영상 시간 업데이트 함수
   const addTimeUpdate = () => {
@@ -217,11 +219,11 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             setIsFocused={seteditorIsFocused}
             setonEdit={setonEdit}
           />
-          <Labels />
+          <Labels totalTime={totalTime} />
         </div>
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>
-      <Segment />
+      <Segment totalTime={totalTime} />
       <div className="note-and-slider-container">
         <div className="slider-container">
           Video Speed

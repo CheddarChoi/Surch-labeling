@@ -11,7 +11,7 @@ import { labels } from "./variables/label-info";
 import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
 interface IProps {
-  // src: string;
+  totalTime: number;
 }
 
 const Labels: React.FC<IProps> = (props) => {
@@ -23,24 +23,19 @@ const Labels: React.FC<IProps> = (props) => {
   );
   const dispatch = useDispatch();
 
-  const updateLabel = (index: number, label: any) => {
-    console.log("[Label.tsx] Update " + index + " into " + label);
-    if (index !== -1) {
-      var docid = "";
-      segmentList.forEach((segment: any) => {
-        if (segment.index === index) docid = segment.id;
-      });
-
+  const updateLabel = (id: string, label: any) => {
+    console.log("[Label.tsx] Update " + id + " into " + label);
+    if (id !== "") {
       const collection = firebase
         .firestore()
         .collection("videos")
         .doc("testvideo1")
         .collection("segments");
-      const document = collection.doc(docid);
+      const document = collection.doc(id);
       document
         .update({ label: label })
         .then(() => {
-          dispatch(setSegmentListFromDB("testvideo1"));
+          dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
         })
         .catch((error) => {
           console.error("Error updating document: ", error);
@@ -55,7 +50,7 @@ const Labels: React.FC<IProps> = (props) => {
   return (
     <div className="label-container">
       <h1 style={{ textAlign: "center" }}>
-        Map labels for each video part/segment ,m
+        Map labels for each video part/segment
       </h1>
       <div className="labels">
         {labels.map((l) => (

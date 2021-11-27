@@ -13,20 +13,38 @@ export const setList = (list: any[]) => ({
 });
 
 export const setSegmentListFromDB =
-  (videoName: string) => (dispatch: Dispatch<setListAction>) => {
+  (videoName: string, videoDTime: number) =>
+  (dispatch: Dispatch<setListAction>) => {
     console.log("Get segment list from DB");
     const collection: any = [];
     const ref = db
       .collection("videos")
       .doc(videoName)
       .collection("segments")
-      .orderBy("index");
+      .orderBy("startTime");
     ref.get().then((snap) => {
-      snap.forEach((doc) => {
-        collection.push(Object.assign({}, { id: doc.id }, doc.data()));
-      });
-      // console.log(collection);
-      dispatch(setList(collection));
+      // 아직 document가 생성되지 않은 경우
+      if (snap.size === 0) {
+        console.log("No documents!");
+        console.log("Video duration: " + videoDTime);
+        const newSegment = {
+          startTime: 0,
+          endTime: videoDTime,
+          label: "undefined",
+        };
+        const segmentCollection = db
+          .collection("videos")
+          .doc(videoName)
+          .collection("segments");
+        segmentCollection.add(newSegment).then(() => {
+          dispatch(setList([newSegment]));
+        });
+      } else {
+        snap.forEach((doc) => {
+          collection.push(Object.assign({}, { id: doc.id }, doc.data()));
+        });
+        dispatch(setList(collection));
+      }
     });
   };
 

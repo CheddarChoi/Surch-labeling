@@ -1,18 +1,18 @@
 const SET_SELECTED = "videoTime/SET_SELECTED" as const;
 
-export const setSelected = (index: number) => ({
+export const setSelected = (id: string) => ({
   type: SET_SELECTED,
-  selectedSegment: index,
+  selectedSegment: id,
 });
 
 type setTimeAction = ReturnType<typeof setSelected>;
 
 type selectedSegmentState = {
-  selectedSegment: number;
+  selectedSegment: string;
 };
 
 const initialState: selectedSegmentState = {
-  selectedSegment: -1,
+  selectedSegment: "",
 };
 
 function setSelectedSegment(

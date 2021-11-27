@@ -15,8 +15,7 @@
 .controller {
   -webkit-appearance: none !important;
   position: absolute;
-  top: 24px;
-  margin: 0;
+  margin-top: -8px;
   width: 100%;
   height: 3px;
   background-color: transparent;

@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import React, { useState, useEffect } from "react";
+
+import { Slider } from "antd";
 import styles from "./progressBar.module.css";
 import { ReplyRounded } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,62 +28,39 @@ const ProgressBar: React.FC<IProps> = ({
   onMouseUp,
   videoElement,
 }) => {
-  const classProps = classNames(styles.default, className);
-
-  const [currStartTime, setCurrStartTime] = useState(0);
-  const [currEndTime, setCurrEndTime] = useState(0);
-
   const dispatch = useDispatch();
-  const videoTime = useSelector(
-    (state: RootState) => state.setVideoTime.videoTime
+  const videoDTime = useSelector(
+    (state: RootState) => state.setVideoDTime.videoDuration
   );
-
   const zoomStartTime = useSelector(
     (state: RootState) => state.setZoomRange.startTime
   );
   const zoomEndTime = useSelector(
     (state: RootState) => state.setZoomRange.endTime
   );
+  const classProps = classNames(styles.default, className);
 
   useEffect(() => {
-    setCurrStartTime(zoomStartTime);
-    setCurrEndTime(zoomEndTime);
-  }, []);
+    // console.log("videoDTime " + videoDTime);
+    // console.log("zoomStartTime " + zoomStartTime);
+    // console.log("zoomEndTime " + zoomEndTime);
+    dispatch(setRange(zoomStartTime, zoomEndTime));
+  }, [zoomStartTime, zoomEndTime]);
 
-  const setCurrRange = () => {
-    dispatch(setRange(currStartTime, currEndTime));
+  const changeZoomRange = (value: any) => {
+    dispatch(setRange(value[0], value[1]));
   };
-
-  const changeStartTime = (e: any) => {
-    setCurrStartTime(e.target.value);
-    setCurrRange();
-  };
-  const changeEndTime = (e: any) => {
-    setCurrEndTime(e.target.value);
-    setCurrRange();
-  };
-
-  const firstStep = 120;
-  const secondStep = 90;
 
   return (
     <div className={classProps}>
-      <div className={styles.zoomRange}>
-        <input
-          type="number"
-          id="startTime"
-          name="startTime"
-          value={zoomStartTime}
-          onChange={(e) => changeStartTime(e)}
-        />
-        <input
-          type="number"
-          id="endTime"
-          name="endTime"
-          value={zoomEndTime}
-          onChange={(e) => changeEndTime(e)}
-        />
-      </div>
+      <div className={styles.zoomRange}></div>
+      <Slider
+        range
+        min={0}
+        max={videoDTime}
+        value={[zoomStartTime, zoomEndTime]}
+        onChange={changeZoomRange}
+      />
       <div className={styles.stepContainer}>
         <div>
           <NoteIcon max={max} onChange={onChange} />
