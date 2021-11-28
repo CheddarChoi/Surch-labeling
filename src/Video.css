@@ -7,7 +7,7 @@
 }
 
 .video-container {
-  height: 60vh;
+  /* height: 60vh; */
 }
 
 .note-and-slider-container {
@@ -41,7 +41,7 @@
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: nowrap;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .label-or-note {

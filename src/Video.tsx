@@ -219,7 +219,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             setIsFocused={seteditorIsFocused}
             setonEdit={setonEdit}
           />
-          <Labels totalTime={totalTime} />
+          <Labels totalTime={totalTime} setIsFocused={seteditorIsFocused} />
         </div>
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>

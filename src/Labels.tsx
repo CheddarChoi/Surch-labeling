@@ -14,6 +14,7 @@ import { setLabelListFromDB } from "./redux/modules/labelList";
 
 interface IProps {
   totalTime: number;
+  setIsFocused: (state: boolean) => any;
 }
 
 const Labels: React.FC<IProps> = (props) => {
@@ -44,6 +45,7 @@ const Labels: React.FC<IProps> = (props) => {
 
   const showModal = () => {
     setIsModalVisible(true);
+    props.setIsFocused(true);
   };
 
   const handleOk = () => {
