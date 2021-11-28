@@ -36,8 +36,8 @@ export const setSegmentListFromDB =
           .collection("videos")
           .doc(videoName)
           .collection("segments");
-        segmentCollection.add(newSegment).then(() => {
-          dispatch(setList([newSegment]));
+        segmentCollection.add(newSegment).then((docref) => {
+          dispatch(setList([Object.assign({}, newSegment, { id: docref.id })]));
         });
       } else {
         snap.forEach((doc) => {

@@ -12,6 +12,7 @@ import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
 import "./segment.css";
 import toTimeString from "./totimeString";
+import { Button } from "antd";
 
 interface IProps {
   totalTime: number;
@@ -41,7 +42,6 @@ const Segment: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
 
   const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
-  // const [delButtonVisible, setDelButtonVisible] = useState<boolean>(false);
 
   const changeSegment = (id: string) => {
     dispatch(setSelected(id));
@@ -85,7 +85,7 @@ const Segment: React.FC<IProps> = (props) => {
     var rect = e.target.parentNode.getBoundingClientRect();
     var x = e.clientX - rect.left;
     if (x <= rect.width)
-      x >= 0 ? setIndicatorPosition(x) : setIndicatorPosition(0);
+      x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
   };
   const divideSegment = (e: any) => {
     var rect = e.target.parentNode.getBoundingClientRect();
@@ -127,9 +127,7 @@ const Segment: React.FC<IProps> = (props) => {
     });
   };
 
-  const deleteSegment = (id: string) => {
-    console.log("delete " + id);
-
+  const deleteSegment = (id: string, prev: boolean) => {
     const delIndex = segmentList.findIndex((s: any) => s.id === id);
     const delSegment = segmentList.at(delIndex);
 
@@ -139,11 +137,11 @@ const Segment: React.FC<IProps> = (props) => {
       .doc("testvideo1")
       .collection("segments");
 
-    if (delIndex === 0) {
+    if (!prev && delIndex !== segmentList.length - 1) {
       const updateSegment = segmentList.at(delIndex + 1);
       collection
         .doc(updateSegment.id)
-        .update({ startTime: delSegment.startTime })
+        .update({ startTime: delSegment.startTime, label: delSegment.label })
         .then(() => {
           console.log("Updated");
           collection
@@ -152,6 +150,7 @@ const Segment: React.FC<IProps> = (props) => {
             .then(() => {
               console.log("Deleted");
               dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+              dispatch(setSelected(""));
             })
             .catch((error) => {
               console.error("Error updating document: ", error);
@@ -160,11 +159,11 @@ const Segment: React.FC<IProps> = (props) => {
         .catch((error) => {
           console.error("Error updating document: ", error);
         });
-    } else {
+    } else if (prev && delIndex !== 0) {
       const updateSegment = segmentList.at(delIndex - 1);
       collection
         .doc(updateSegment.id)
-        .update({ endTime: delSegment.endTime })
+        .update({ endTime: delSegment.endTime, label: delSegment.label })
         .then(() => {
           console.log("Updated");
           collection
@@ -173,6 +172,7 @@ const Segment: React.FC<IProps> = (props) => {
             .then(() => {
               console.log("Deleted");
               dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+              dispatch(setSelected(""));
             })
             .catch((error) => {
               console.error("Error updating document: ", error);
@@ -187,25 +187,28 @@ const Segment: React.FC<IProps> = (props) => {
   const handleKeyEvent = (e: any) => {
     console.log("keyEvent:" + e.keyCode + " selected: " + selectedSegment);
     var keycode = e.keyCode;
-    if (keycode === 8 && selectedSegment !== "") deleteSegment(selectedSegment);
+    if (keycode === 8 && selectedSegment !== "")
+      deleteSegment(selectedSegment, true);
+  };
+
+  const timestamps = (startTime: number, endTime: number, step: number) => {
+    var times = [];
+    for (var i = 0; i <= step; i++) {
+      times.push((startTime * (step - i) + endTime * i) / step);
+    }
+    return (
+      <div className="timestamp-container">
+        {times.map((t) => (
+          <div className="timestamp">{toTimeString(t)}</div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div className="segment-container">
       <div style={{ position: "relative" }}>
-        <div className="timestamp-container">
-          <div className="timestamp">{toTimeString(zoomRangeStartTime)}</div>
-          <div className="timestamp">
-            {toTimeString((zoomRangeStartTime + zoomRangeEndTime) / 4)}
-          </div>
-          <div className="timestamp">
-            {toTimeString((zoomRangeStartTime + zoomRangeEndTime) / 2)}
-          </div>
-          <div className="timestamp">
-            {toTimeString(((zoomRangeStartTime + zoomRangeEndTime) * 3) / 4)}
-          </div>
-          <div className="timestamp">{toTimeString(zoomRangeEndTime)}</div>
-        </div>
+        {timestamps(zoomRangeStartTime, zoomRangeEndTime, 8)}
         <div className="segments">
           {segmentList.map((segment: any) => {
             if (
@@ -257,6 +260,7 @@ const Segment: React.FC<IProps> = (props) => {
           </div>
           <div
             className="hover-container"
+            onMouseOut={(e) => setIndicatorPosition(0)}
             onMouseMove={(e) => displayHoverIndicator(e)}
             onClick={(e) => divideSegment(e)}
           >
@@ -265,7 +269,16 @@ const Segment: React.FC<IProps> = (props) => {
               style={{ left: indicatorPosition }}
             ></div>
           </div>
-          <button onClick={() => deleteSegment(selectedSegment)}>Delete</button>
+          {selectedSegment !== "" && (
+            <div>
+              <Button onClick={() => deleteSegment(selectedSegment, true)}>
+                Merge with previous segment
+              </Button>
+              <Button onClick={() => deleteSegment(selectedSegment, false)}>
+                Merge with next segment
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
