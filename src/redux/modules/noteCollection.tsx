@@ -32,11 +32,8 @@ export const setCollectionFromDB =
     ref.get().then((snap) => {
       snap.forEach((doc) => {
         if (
-          doc.data().videoTimestamp < videoDuration &&
-          category.indexOf(doc.data().category) > -1 &&
-          (doc.data().userId ===
-            firebase.auth().currentUser?.email?.split("@")[0]! ||
-            doc.data().userId === "dummy_example")
+          doc.data().userId === firebase.auth().currentUser?.uid ||
+          doc.data().userId === "dummy_example"
         )
           collection.push(doc.data());
       });

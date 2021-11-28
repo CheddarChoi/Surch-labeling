@@ -5,11 +5,13 @@ import ProgressBar from "./ProgressBar";
 
 import styles from "./controlbar.module.css";
 
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
 import pauseIcon from "./assets/pause.png";
 import playIcon from "./assets/play.png";
 import muteIcon from "./assets/mute.png";
 import volumeIcon from "./assets/volume.png";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "./redux/modules";
 
 interface IProps {
@@ -111,14 +113,25 @@ const Controlbar: React.FC<IProps> = ({
         />
       </div>
       <div className={playControlClassProps}>
-        <div className={styles.playBg}>
-          <img
+        {/* <div className={styles.playBg}> */}
+        {nowPlaying ? (
+          <PauseCircleFilledIcon
+            className={styles.playIcon}
+            onClick={onPlayIconClick}
+          />
+        ) : (
+          <PlayCircleFilledIcon
+            className={styles.playIcon}
+            onClick={onPlayIconClick}
+          />
+        )}
+        {/* <img
             className={styles.playIcon}
             src={nowPlaying ? pauseIcon : playIcon}
             onClick={onPlayIconClick}
             alt={""}
-          />
-        </div>
+          /> */}
+        {/* </div> */}
       </div>
     </>
   );

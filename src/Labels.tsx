@@ -33,14 +33,8 @@ const Labels: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        var uid = user.uid;
-        dispatch(setLabelListFromDB(uid));
-      } else {
-        console.error("User Not Exist!");
-      }
-    });
+    var uid = firebase.auth().currentUser?.uid;
+    if (uid) dispatch(setLabelListFromDB(uid));
   }, [props.totalTime]);
 
   const showModal = () => {
@@ -116,29 +110,25 @@ const Labels: React.FC<IProps> = (props) => {
   };
 
   const addCustomLabel = (name: string, label: string, color: string) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        var uid = user.uid;
-        const collection = firebase.firestore().collection("labels");
-        collection
-          .add({
-            name,
-            label,
-            color,
-            user: uid,
-            created: firebase.firestore.FieldValue.serverTimestamp(),
-          })
-          .then(() => {
-            console.log("Added " + label);
-            dispatch(setLabelListFromDB(uid));
-          })
-          .catch((error) => {
-            console.error("Error updating document: ", error);
-          });
-      } else {
-        console.error("User Not Exist!");
-      }
-    });
+    var uid = firebase.auth().currentUser?.uid;
+    if (uid) {
+      const collection = firebase.firestore().collection("labels");
+      collection
+        .add({
+          name,
+          label,
+          color,
+          user: uid,
+          created: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          console.log("Added " + label);
+          if (uid) dispatch(setLabelListFromDB(uid));
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    }
   };
 
   return (
