@@ -1,10 +1,8 @@
-import classNames from "classnames";
 import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
 import Labels from "./Labels";
 import Controlbar from "./Controlbar";
 import { Slider } from "antd";
-import LiveNote from "./live-note";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
@@ -140,12 +138,13 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   };
 
   const marks = {
-    0.5: { style: { color: "white" }, label: "x0.5" },
-    1: { style: { color: "white" }, label: "x1" },
-    1.5: { style: { color: "white" }, label: "x1.5" },
-    2: { style: { color: "white" }, label: "x2" },
-    3: { style: { color: "white" }, label: "x3" },
-    4: { style: { color: "white" }, label: "x4" },
+    0.5: { label: "x0.5" },
+    1: { label: "x1" },
+    1.5: { label: "x1.5" },
+    2: { label: "x2" },
+    3: { label: "x3" },
+    4: { label: "x4" },
+    5: { label: "x5" },
   };
 
   window.onkeydown = (event: KeyboardEvent): any => {
@@ -183,7 +182,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           onMouseLeave={setControlInvisible}
         >
           <video
-            className="video-container"
             loop={false}
             muted={true}
             ref={ref}
@@ -208,6 +206,19 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           />
         </div>
         <div className="label-or-note">
+          <div className="note-and-slider-container">
+            <div className="slider-container">
+              <h4>Video Speed</h4>
+              <Slider
+                id="playbackslider"
+                marks={marks}
+                step={null}
+                defaultValue={1}
+                max={5}
+                onChange={(value: any) => setPlaybackRate(value)}
+              />
+            </div>
+          </div>
           <NoteTaking
             ref={noteTakingRef}
             userId={
@@ -224,19 +235,6 @@ const Video: React.FC<IProps> = ({ className, src }) => {
       </div>
       <div className="live-note-container">{/* <LiveNote /> */}</div>
       <Segment totalTime={totalTime} />
-      <div className="note-and-slider-container">
-        <div className="slider-container">
-          Video Speed
-          <Slider
-            id="playbackslider"
-            marks={marks}
-            step={null}
-            defaultValue={1}
-            max={4}
-            onChange={(value: any) => setPlaybackRate(value)}
-          />
-        </div>
-      </div>
     </>
   );
 };

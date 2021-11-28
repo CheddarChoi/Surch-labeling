@@ -7,8 +7,6 @@ import styles from "./controlbar.module.css";
 
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
-import pauseIcon from "./assets/pause.png";
-import playIcon from "./assets/play.png";
 import muteIcon from "./assets/mute.png";
 import volumeIcon from "./assets/volume.png";
 import { useSelector } from "react-redux";

@@ -16,13 +16,6 @@ export const setCollectionFromDB =
   (videoName: string, videoDuration: number) =>
   (dispatch: Dispatch<setCollectionAction>) => {
     const collection: any = [];
-    const category: any = [
-      "Challenging",
-      "Skill",
-      "Distinctive",
-      "Opportunity",
-      "Others",
-    ];
     console.log("Get Collection from DB");
     const ref = db
       .collection("videos")

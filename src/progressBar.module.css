@@ -43,7 +43,7 @@
 .stepContainer {
   display: flex;
   top: 10px;
-  height: 20px;
+  height: 16px;
   width: 100%;
   align-items: center;
   background-color: rgba(160, 160, 160, 0.616);

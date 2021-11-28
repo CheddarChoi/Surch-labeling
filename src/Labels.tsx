@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "./firebase";
 
-// import { setLabel } from "./Segment";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 

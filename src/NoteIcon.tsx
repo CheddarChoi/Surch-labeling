@@ -17,7 +17,7 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
   );
 
   const NoteBubble = ({ note }: any) => {
-    const [size, setsize] = useState("20px");
+    const [size, setsize] = useState("16px");
     const videoTime_num: number = note.videoTimestamp;
     const [showNote, setshowNote] = useState(false);
     const notepos = (videoTime_num / max || 0) * 100;
@@ -30,11 +30,11 @@ const NoteIcon: React.FC<NoteIconProps> = ({ max, onChange }) => {
         <ChatBubbleIcon
           onMouseOver={() => {
             setshowNote(true);
-            setsize("25px");
+            setsize("22px");
           }}
           onMouseOut={() => {
             setshowNote(false);
-            setsize("20px");
+            setsize("16px");
           }}
           onClick={() => {
             onChange((note.videoTimestamp / max) * 100);
