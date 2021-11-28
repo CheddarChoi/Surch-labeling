@@ -4,7 +4,7 @@ import firebase from "./firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setSelected } from "./redux/modules/selectedSegment";
-import { key2color } from "./variables/label-info";
+import { key2color, labels } from "./variables/label-info";
 
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 

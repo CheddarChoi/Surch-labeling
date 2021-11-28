@@ -4,6 +4,7 @@ import setNoteCollection from "./noteCollection";
 import setVideoDTime from "./videoDuration";
 import setSelectedSegment from "./selectedSegment";
 import setSegmentList from "./segmentList";
+import setLabelList from "./labelList";
 import setZoomRange from "./zoomRange";
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   setVideoDTime,
   setSelectedSegment,
   setSegmentList,
+  setLabelList,
   setZoomRange,
 });
 

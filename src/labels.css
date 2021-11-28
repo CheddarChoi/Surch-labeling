@@ -34,3 +34,11 @@
 
   cursor: pointer;
 }
+
+.modalLabel {
+  margin-right: 10px;
+  line-height: 30px;
+}
+input {
+  margin-bottom: 10px !important;
+}
