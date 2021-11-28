@@ -1,4 +1,5 @@
-const toTimeString = (second: number) => {
+const toTimeString = (second: number | undefined) => {
+  if (second === undefined) return "";
   const date = new Date(second * 1000);
 
   const hh = date.getUTCHours();

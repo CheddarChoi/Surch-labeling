@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import NoteIcon from "./NoteIcon";
 import TimeProgressBar from "./TimeProgressBar";
+import toTimeString from "./totimeString";
 import LiveNote from "./live-note";
 import { setRange } from "./redux/modules/zoomRange";
 
@@ -29,6 +30,9 @@ const ProgressBar: React.FC<IProps> = ({
   videoElement,
 }) => {
   const dispatch = useDispatch();
+  const videoTime = useSelector(
+    (state: RootState) => state.setVideoTime.videoTime
+  );
   const videoDTime = useSelector(
     (state: RootState) => state.setVideoDTime.videoDuration
   );
@@ -41,15 +45,15 @@ const ProgressBar: React.FC<IProps> = ({
   const classProps = classNames(styles.default, className);
 
   useEffect(() => {
-    // console.log("videoDTime " + videoDTime);
-    // console.log("zoomStartTime " + zoomStartTime);
-    // console.log("zoomEndTime " + zoomEndTime);
     dispatch(setRange(zoomStartTime, zoomEndTime));
   }, [zoomStartTime, zoomEndTime]);
 
   const changeZoomRange = (value: any) => {
     dispatch(setRange(value[0], value[1]));
   };
+
+  // let marks: { [name: number]: string } = {};
+  // marks[videoTime] = "";
 
   return (
     <div className={classProps}>
@@ -60,6 +64,9 @@ const ProgressBar: React.FC<IProps> = ({
         max={videoDTime}
         value={[zoomStartTime, zoomEndTime]}
         onChange={changeZoomRange}
+        tipFormatter={toTimeString}
+        // tooltipVisible={false}
+        // marks={marks}
       />
       <div className={styles.stepContainer}>
         <div>
