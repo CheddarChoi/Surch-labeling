@@ -129,8 +129,6 @@ const App: React.FC<AppProps> = (props) => {
         >
           <div className={clsx(classes.viewNotes)}>View Notes</div>
           <ChevronLeft style={{ fontSize: 40 }} />
-          {/* View Notes */}
-          {/* <Menu /> */}
         </IconButton>
         <Drawer
           className={classes.drawer}

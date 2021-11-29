@@ -1,6 +1,7 @@
 // import { RcFile } from 'antd/lib/upload';
 import React, { useState, useEffect } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+
 import App from "./App";
 import Login from "./login";
 import Register from "./register";
@@ -15,7 +16,6 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
   const [user, setUser] = useState<any>("");
 
   useEffect(() => {
-    // 브라우저 API를 이용하여 문서 타이틀을 업데이트합니다.
     auth?.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
@@ -26,12 +26,13 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
   });
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       {user && (
         <>
           <Header login={true} />
           <Switch>
-            <Route path="/" exact component={App} />
+            <Route exact path="/" component={App} />
+            <Redirect path="*" to="/" />
           </Switch>
         </>
       )}
@@ -39,13 +40,13 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
         <>
           <Header login={false} />
           <Switch>
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/" exact component={Login} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Redirect path="*" to="/login" />
           </Switch>
         </>
       )}
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

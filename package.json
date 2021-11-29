@@ -2,7 +2,6 @@
   "name": "video-learning-platform",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://euicheon.github.io/music-project",
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@material-ui/core": "^4.11.3",
