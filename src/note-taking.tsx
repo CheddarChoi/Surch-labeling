@@ -13,6 +13,7 @@ import "./note-taking.css";
 
 var db = firebase.firestore();
 interface noteTakingProps {
+  videoid: string;
   userId: string;
   nowPlaying: any;
   setIsFocused: any;
@@ -57,7 +58,7 @@ const NoteTaking = React.forwardRef(
       var uid = firebase.auth().currentUser?.uid;
       const noteCollection = db
         .collection("videos")
-        .doc("testvideo1")
+        .doc(props.videoid)
         .collection("note");
 
       props.setonEdit(false);
@@ -69,7 +70,7 @@ const NoteTaking = React.forwardRef(
           videoTimestamp: videoTime,
         })
         .then(() => {
-          dispatch(setCollectionFromDB("testvideo1", videoDTime));
+          dispatch(setCollectionFromDB(props.videoid, videoDTime));
         });
       message.success("The note is saved at " + toTimeString(videoTime));
       seteditorState(

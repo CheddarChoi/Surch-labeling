@@ -1,4 +1,3 @@
-// import { RcFile } from 'antd/lib/upload';
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
@@ -7,6 +6,8 @@ import Login from "./login";
 import Register from "./register";
 import { auth } from "./firebase";
 import Header from "./components/Header";
+import VideoList from "./VideoList";
+import Footer from "./components/Footer";
 
 interface AppRouterProps {
   history?: any;
@@ -31,9 +32,17 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
         <>
           <Header login={true} />
           <Switch>
-            <Route exact path="/" component={App} />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <VideoList uid={user.uid} username={user.displayName} />
+              )}
+            />
+            <Route exact path="/video/:videoid" component={App} />
             <Redirect path="*" to="/" />
           </Switch>
+          <Footer />
         </>
       )}
       {!user && (
@@ -44,6 +53,7 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
             <Route path="/register" component={Register} />
             <Redirect path="*" to="/login" />
           </Switch>
+          <Footer />
         </>
       )}
     </BrowserRouter>

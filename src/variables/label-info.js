@@ -15,21 +15,3 @@ export const labels = [
   { name: "Bladder neck and urethra + Suture", label: "BUS", color: "#80BA89" },
   { name: "Undefined", label: "undefined", color: "#DDDDDD" },
 ];
-
-const colors = {
-  SVD: "#FFADAD",
-  BR: "#FFC672",
-  LD: "#F8B790",
-  ED: "#E8D39C",
-  BD: "#D5E89C",
-  ND: "#B1D8BA",
-  DD: "#AC93BF",
-  PD: "#99E0FF",
-  VA: "#99C2FF",
-  BUS: "#80BA89",
-};
-
-export const key2color = (inputLabel) => {
-  if (inputLabel === "undefined") return "#DDDDDD";
-  return colors[inputLabel];
-};

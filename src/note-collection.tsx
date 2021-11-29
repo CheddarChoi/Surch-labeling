@@ -13,7 +13,9 @@ const toTimeString = (seconds: number) => {
   return new Date(seconds * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)![0];
 };
 
-interface noteCollectionProps {}
+interface noteCollectionProps {
+  videoid: string;
+}
 
 const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   const collection = useSelector(
@@ -32,7 +34,7 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
   };
 
   useEffect(() => {
-    dispatch(setCollectionFromDB("testvideo1", videoDTime));
+    dispatch(setCollectionFromDB(props.videoid, videoDTime));
   }, [dispatch, videoDTime]);
 
   const linkToTime = (time: number) => {

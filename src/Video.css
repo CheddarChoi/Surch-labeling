@@ -1,3 +1,7 @@
+.wrapper {
+  margin-bottom: 24px;
+}
+
 .video-player-container {
   position: relative;
   background: rgba(0, 0, 0);
@@ -19,11 +23,6 @@
   text-align: center;
 }
 
-.live-note-container {
-  position: relative;
-  top: -150px;
-}
-
 .video-and-label-container {
   width: 100%;
   display: flex;
@@ -35,4 +34,10 @@
 
 .label-or-note {
   width: 35vw;
+}
+
+.completeButton {
+  display: flex;
+  margin-left: auto;
+  margin-right: 0;
 }

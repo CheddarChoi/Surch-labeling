@@ -12,6 +12,7 @@ import { Alert, Input, Modal } from "antd";
 import { setLabelListFromDB } from "./redux/modules/labelList";
 
 interface IProps {
+  videoid: string;
   totalTime: number;
   setIsFocused: (state: boolean) => any;
 }
@@ -69,13 +70,13 @@ const Labels: React.FC<IProps> = (props) => {
     const collection = firebase
       .firestore()
       .collection("videos")
-      .doc("testvideo1")
+      .doc(props.videoid)
       .collection("segments");
     const document = collection.doc(id);
     document
       .update({ label: label })
       .then(() => {
-        dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+        dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
       })
       .catch((error) => {
         console.error("Error updating document: ", error);
@@ -132,9 +133,9 @@ const Labels: React.FC<IProps> = (props) => {
 
   return (
     <div className="label-container">
-      <h1 style={{ textAlign: "center" }}>
+      <h2 style={{ textAlign: "center" }}>
         Map labels for each video part/segment
-      </h1>
+      </h2>
       <div className="labels">
         {labelList.map((l: any) => (
           <div

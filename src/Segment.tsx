@@ -4,7 +4,6 @@ import firebase from "./firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setSelected } from "./redux/modules/selectedSegment";
-import { key2color, labels } from "./variables/label-info";
 
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 
@@ -16,9 +15,13 @@ import { Button } from "antd";
 
 interface IProps {
   totalTime: number;
+  videoid: string;
 }
 
 const Segment: React.FC<IProps> = (props) => {
+  const labelList = useSelector(
+    (state: RootState) => state.setLabelList.labelList
+  );
   const segmentList = useSelector(
     (state: RootState) => state.setSegmentList.segmentList
   );
@@ -34,14 +37,11 @@ const Segment: React.FC<IProps> = (props) => {
   const selectedSegment = useSelector(
     (state: RootState) => state.setSelectedSegment.selectedSegment
   );
-  // console.log(
-  //   "[Segment.tsx] zoom range " + zoomRangeStartTime + " " + zoomRangeEndTime
-  // );
-  // console.log("[Segment.tsx] videoTime " + videoTime);
 
   const dispatch = useDispatch();
 
   const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
+  const [divideLocked, setDivideLocked] = useState<boolean>(false);
 
   const changeSegment = (id: string) => {
     dispatch(setSelected(id));
@@ -55,9 +55,10 @@ const Segment: React.FC<IProps> = (props) => {
   useEffect(() => {
     changeSegment("");
     if (props.totalTime !== 0)
-      dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+      dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
   }, [props.totalTime]);
 
+  // ------- Helper Functions ------- //
   const time2width = (startTime: number, endTime: number) => {
     const fullWidth = zoomRangeEndTime - zoomRangeStartTime;
     var result;
@@ -71,15 +72,20 @@ const Segment: React.FC<IProps> = (props) => {
       result = 100;
     else if (startTime > zoomRangeEndTime || endTime < zoomRangeStartTime)
       result = 0;
-    // console.log(startTime + " " + endTime + " " + result);
     return result;
   };
-
   const time2position = (timestamp: number) =>
     ((timestamp - zoomRangeStartTime) * 100) /
     (zoomRangeEndTime - zoomRangeStartTime);
   const position2time = (position: number) =>
     position * (zoomRangeEndTime - zoomRangeStartTime) - zoomRangeStartTime;
+  const key2color = (key: string) => {
+    var color = "#FFFFFF";
+    labelList.forEach((label: any) => {
+      if (label.label === key) color = label.color;
+    });
+    return color;
+  };
 
   const displayHoverIndicator = (e: any) => {
     var rect = e.target.parentNode.getBoundingClientRect();
@@ -88,43 +94,49 @@ const Segment: React.FC<IProps> = (props) => {
       x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
   };
   const divideSegment = (e: any) => {
-    var rect = e.target.parentNode.getBoundingClientRect();
-    const timestamp = position2time(indicatorPosition / rect.width);
-    console.log(timestamp);
+    if (!divideLocked) {
+      setDivideLocked(true);
+      var rect = e.target.parentNode.getBoundingClientRect();
+      const timestamp = position2time(indicatorPosition / rect.width);
+      console.log(timestamp);
 
-    const collection = firebase
-      .firestore()
-      .collection("videos")
-      .doc("testvideo1")
-      .collection("segments");
+      const collection = firebase
+        .firestore()
+        .collection("videos")
+        .doc(props.videoid)
+        .collection("segments");
 
-    segmentList.forEach((segment: any) => {
-      if (segment.startTime < timestamp && segment.endTime > timestamp) {
-        console.log(segment);
-        collection
-          .add({
-            startTime: timestamp,
-            endTime: segment.endTime,
-            label: segment.label,
-          })
-          .then(() => {
-            console.log("Added");
-            collection
-              .doc(segment.id)
-              .update({ endTime: timestamp })
-              .then(() => {
-                console.log("Updated");
-                dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
-              })
-              .catch((error) => {
-                console.error("Error updating document: ", error);
-              });
-          })
-          .catch((error) => {
-            console.error("Error updating document: ", error);
-          });
-      }
-    });
+      segmentList.forEach((segment: any) => {
+        if (segment.startTime < timestamp && segment.endTime > timestamp) {
+          console.log(segment);
+          collection
+            .add({
+              startTime: timestamp,
+              endTime: segment.endTime,
+              label: segment.label,
+            })
+            .then(() => {
+              console.log("Added");
+              collection
+                .doc(segment.id)
+                .update({ endTime: timestamp })
+                .then(() => {
+                  console.log("Updated");
+                  dispatch(
+                    setSegmentListFromDB(props.videoid, props.totalTime)
+                  );
+                  setDivideLocked(false);
+                })
+                .catch((error) => {
+                  console.error("Error updating document: ", error);
+                });
+            })
+            .catch((error) => {
+              console.error("Error updating document: ", error);
+            });
+        }
+      });
+    }
   };
 
   const deleteSegment = (id: string, prev: boolean) => {
@@ -134,7 +146,7 @@ const Segment: React.FC<IProps> = (props) => {
     const collection = firebase
       .firestore()
       .collection("videos")
-      .doc("testvideo1")
+      .doc(props.videoid)
       .collection("segments");
 
     if (!prev && delIndex !== segmentList.length - 1) {
@@ -149,7 +161,7 @@ const Segment: React.FC<IProps> = (props) => {
             .delete()
             .then(() => {
               console.log("Deleted");
-              dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+              dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
               dispatch(setSelected(""));
             })
             .catch((error) => {
@@ -171,7 +183,7 @@ const Segment: React.FC<IProps> = (props) => {
             .delete()
             .then(() => {
               console.log("Deleted");
-              dispatch(setSegmentListFromDB("testvideo1", props.totalTime));
+              dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
               dispatch(setSelected(""));
             })
             .catch((error) => {

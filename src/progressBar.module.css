@@ -93,13 +93,6 @@
   padding-top: 13px;
 }
 
-.livenotecontent {
-  padding: 7px;
-  text-align: left;
-  overflow: auto;
-  width: 790px;
-}
-
 .reactionscontainer {
   align-self: right;
   height: 45px;

@@ -57,6 +57,7 @@ const Register: React.FC<RegisterProps> = (props) => {
         props.history.push("/");
       })
       .catch((error) => {
+        console.log("Error in registering");
         setError({ error });
       });
   };

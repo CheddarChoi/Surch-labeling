@@ -64,7 +64,7 @@
 
 .appbody {
   display: grid;
-  grid-template-columns: 75% 20%;
+  grid-template-columns: 95% 5%;
   grid-gap: 1em;
   margin: 0 auto;
 }

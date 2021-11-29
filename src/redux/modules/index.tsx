@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import setVideoTime from "./videoTime";
 import setNoteCollection from "./noteCollection";
+import setVideoCollection from "./videoCollection";
 import setVideoDTime from "./videoDuration";
 import setSelectedSegment from "./selectedSegment";
 import setSegmentList from "./segmentList";
@@ -10,6 +11,7 @@ import setZoomRange from "./zoomRange";
 const rootReducer = combineReducers({
   setVideoTime,
   setNoteCollection,
+  setVideoCollection,
   setVideoDTime,
   setSelectedSegment,
   setSegmentList,

@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
 import Labels from "./Labels";
 import Controlbar from "./Controlbar";
-import { Slider } from "antd";
+import { Button, Modal, Slider } from "antd";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,22 +12,31 @@ import { setDTime } from "./redux/modules/videoDuration";
 import firebase from "firebase";
 import Segment from "./Segment";
 import { setRange } from "./redux/modules/zoomRange";
+import ArrowForward from "@material-ui/icons/ArrowForward";
+import { setvideoCollectionFromDB } from "./redux/modules/videoCollection";
+import { Link } from "react-router-dom";
 
 interface IProps {
   className?: string;
+  videoid: string;
   src: string;
+  userid: string;
 }
 
-const Video: React.FC<IProps> = ({ className, src }) => {
+const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const { videoElement, setVideoElement } = useVideoElement()!;
   const [editorIsFocused, seteditorIsFocused] = useState(false);
   const [onEdit, setonEdit] = useState(false);
+  const [videoSrc, setVideoSrc] = useState("");
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
+  );
+  const segmentList = useSelector(
+    (state: RootState) => state.setSegmentList.segmentList
   );
   const dispatch = useDispatch();
 
@@ -40,14 +49,29 @@ const Video: React.FC<IProps> = ({ className, src }) => {
   type CountdownHandle = React.ElementRef<typeof NoteTaking>;
   const noteTakingRef = useRef<CountdownHandle>(null);
 
-  // const totalTime = (ref && ref.current && ref.current.duration) || 0; //총 길이
   setVideoElement(ref && ref.current);
 
-  const videoSrc = src || "";
+  useEffect(() => {
+    setVideoSrc(src);
+  }, [src]);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const startTime = Math.floor(videoTime);
   const handleLoadedMDN = (e: any) => {
     setTotalTime(e.target.duration);
-    // console.log(e.target.duration);
     dispatch(setDTime(e.target.duration));
     dispatch(setRange(0, e.target.duration));
   };
@@ -173,8 +197,30 @@ const Video: React.FC<IProps> = ({ className, src }) => {
     }
   };
 
+  const segmentCompleted = (list: any) => {
+    var complete = true;
+    list.forEach((l: any) => {
+      if (l.label === "undefined") complete = false;
+    });
+    return complete;
+  };
+  const setComplete = () => {
+    const collection = firebase.firestore().collection("videos");
+    collection
+      .doc(videoid)
+      .update({ complete: true })
+      .then(() => {
+        console.log("Complete video");
+        dispatch(setvideoCollectionFromDB(userid));
+        setIsModalVisible(true);
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      });
+  };
+
   return (
-    <>
+    <div className="wrapper">
       <div className="video-and-label-container">
         <div
           className="video-player-container"
@@ -221,6 +267,7 @@ const Video: React.FC<IProps> = ({ className, src }) => {
           </div>
           <NoteTaking
             ref={noteTakingRef}
+            videoid={videoid}
             userId={
               firebase.auth().currentUser
                 ? firebase.auth().currentUser?.email!.split("@")[0]!
@@ -230,12 +277,44 @@ const Video: React.FC<IProps> = ({ className, src }) => {
             setIsFocused={seteditorIsFocused}
             setonEdit={setonEdit}
           />
-          <Labels totalTime={totalTime} setIsFocused={seteditorIsFocused} />
+          <Labels
+            totalTime={totalTime}
+            setIsFocused={seteditorIsFocused}
+            videoid={videoid}
+          />
         </div>
       </div>
-      <div className="live-note-container">{/* <LiveNote /> */}</div>
-      <Segment totalTime={totalTime} />
-    </>
+      <Segment totalTime={totalTime} videoid={videoid} />
+      <br />
+      {segmentCompleted(segmentList) && (
+        <div style={{ width: "100%" }}>
+          <Button
+            className="completeButton"
+            type="primary"
+            onClick={setComplete}
+          >
+            Complete
+            <ArrowForward />
+          </Button>
+        </div>
+      )}
+      <Modal
+        visible={isModalVisible}
+        title="Complete!"
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Keep labeling
+          </Button>,
+          <Button key="submit" type="primary">
+            <Link to="/">Go to main page</Link>
+          </Button>,
+        ]}
+      >
+        <p>Thank you for labeling!</p>
+      </Modal>
+    </div>
   );
 };
 
