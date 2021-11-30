@@ -1,73 +1,75 @@
 .singlenote {
-    border-radius: 14px;
-    margin-bottom: 10px;
-    box-shadow: 0 6px 5px -3px rgba(64,60,67,.24),8px 0 8px -7px rgba(64,60,67,.24),-8px 0 8px -7px rgba(64,60,67,.24);
-    padding-inline: 10px;
-    padding-top: 10px;
-    padding-bottom: 5px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 5px -3px rgba(64, 60, 67, 0.24),
+    8px 0 8px -7px rgba(64, 60, 67, 0.24),
+    -8px 0 8px -7px rgba(64, 60, 67, 0.24);
+  padding-inline: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 
 .notecategory {
-    justify-content: space-between;
-    display: flex;
+  justify-content: space-between;
+  display: flex;
 }
 
 .challenging {
-    color: rgb(218, 68, 31);
-    font-weight: bold;
+  color: rgb(218, 68, 31);
+  font-weight: bold;
 }
 
 .skill {
-    color: rgb(51, 83, 172);
-    font-weight: bold;
+  color: rgb(51, 83, 172);
+  font-weight: bold;
 }
 
 .distinctive {
-    color: rgb(194, 164, 31);
-    font-weight: bold;
+  color: rgb(194, 164, 31);
+  font-weight: bold;
 }
 
 .opportunity {
-    color: rgb(89, 175, 40);
-    font-weight: bold;
+  color: rgb(89, 175, 40);
+  font-weight: bold;
 }
 
 .others {
-    color: rgb(66, 66, 66);
-    font-weight: bold;
+  color: rgb(66, 66, 66);
+  font-weight: bold;
 }
 
 .collection {
-	padding-left: 20px;
-	padding-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .noteimg {
-    width: 95%;
-    height: 95%;
-    object-fit: contain;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 8px;
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 8px;
 }
 
 .noteheader {
-    justify-content: space-between;
-    display: flex;
+  justify-content: space-between;
+  display: flex;
 }
 
 .coll-category {
-    z-index: 1;
-    background-color: rgb(255, 255, 255);
-    position: sticky;
-    top: 48px;
+  z-index: 1;
+  background-color: rgb(255, 255, 255);
+  position: sticky;
+  top: 48px;
 }
 
 .MuiFormGroup-root {
-    padding: 0 0 0 13px;
+  padding: 0 0 0 13px;
 }
 
 .category-entry {
-    font-size: 0.9rem;
+  font-size: 0.9rem;
 }

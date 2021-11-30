@@ -28,7 +28,7 @@ export const setCollectionFromDB =
           doc.data().userId === firebase.auth().currentUser?.uid ||
           doc.data().userId === "dummy_example"
         )
-          collection.push(doc.data());
+          collection.push(Object.assign({}, { id: doc.id }, doc.data()));
       });
       dispatch(setCollection(collection));
     });

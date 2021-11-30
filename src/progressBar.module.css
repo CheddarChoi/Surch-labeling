@@ -128,3 +128,10 @@
   justify-content: space-between;
   color: black;
 }
+
+.livenotecontent {
+  padding: 7px;
+  text-align: left;
+  overflow: auto;
+  width: 790px;
+}

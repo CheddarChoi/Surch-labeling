@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-
+import firebase from "firebase";
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setTime } from "./redux/modules/videoTime";
 import { setCollectionFromDB } from "./redux/modules/noteCollection";
-import { List } from "antd";
+import { List, Button, message } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 import "./note-collection.css";
 
@@ -42,6 +43,23 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
     videoElement.currentTime = time;
   };
 
+  const deleteNote = (note: any) => {
+    console.log(note);
+    const noteCollection = firebase
+      .firestore()
+      .collection("videos")
+      .doc(props.videoid)
+      .collection("note");
+
+    noteCollection
+      .doc(note.id)
+      .delete()
+      .then(() => {
+        dispatch(setCollectionFromDB(props.videoid, videoDTime));
+      });
+    message.success("The note is deleted");
+  };
+
   return (
     <div>
       <div className="collection">
@@ -58,6 +76,12 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
                 }
                 description={note.content}
               />
+              <div>
+                <Button
+                  icon={<DeleteOutlined />}
+                  onClick={() => deleteNote(note)}
+                ></Button>
+              </div>
             </List.Item>
           )}
         />
