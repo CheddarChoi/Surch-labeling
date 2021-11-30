@@ -6,6 +6,7 @@ import { RootState } from "./redux/modules";
 import { setSelected } from "./redux/modules/selectedSegment";
 
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import { ScissorOutlined } from "@ant-design/icons";
 
 import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
@@ -196,6 +197,27 @@ const Segment: React.FC<IProps> = (props) => {
     }
   };
 
+  const deleteAllSegment = () => {
+    const collection = firebase
+      .firestore()
+      .collection("videos")
+      .doc(props.videoid)
+      .collection("segments");
+
+    collection
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.docs.forEach((snapshot) => {
+          snapshot.ref
+            .delete()
+            .then(
+              dispatch(setSegmentListFromDB(props.videoid, props.totalTime))
+            );
+        });
+      })
+      .then(dispatch(setSegmentListFromDB(props.videoid, props.totalTime)));
+  };
+
   const handleKeyEvent = (e: any) => {
     console.log("keyEvent:" + e.keyCode + " selected: " + selectedSegment);
     var keycode = e.keyCode;
@@ -264,7 +286,7 @@ const Segment: React.FC<IProps> = (props) => {
             }
           })}
           <div
-            className="curr-timestamp-container"
+            className="icon-bar-container"
             style={{ left: time2position(videoTime) + "%" }}
           >
             <PlayCircleFilledIcon />
@@ -276,21 +298,37 @@ const Segment: React.FC<IProps> = (props) => {
             onMouseMove={(e) => displayHoverIndicator(e)}
             onClick={(e) => divideSegment(e)}
           >
-            <div
-              className="hoverIndicator"
-              style={{ left: indicatorPosition }}
-            ></div>
-          </div>
-          {selectedSegment !== "" && (
-            <div>
-              <Button onClick={() => deleteSegment(selectedSegment, true)}>
-                Merge with previous segment
-              </Button>
-              <Button onClick={() => deleteSegment(selectedSegment, false)}>
-                Merge with next segment
-              </Button>
+            <div className="hoverIndicator" style={{ left: indicatorPosition }}>
+              <div className="curr-hover"></div>
+              <div
+                style={{
+                  marginBottom: "3px",
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "24px",
+                  backgroundColor: "black",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ScissorOutlined style={{ fontSize: "16px", color: "white" }} />
+              </div>
             </div>
-          )}
+          </div>
+          <div>
+            <Button onClick={deleteAllSegment}>Reset all segments</Button>
+            {selectedSegment !== "" && (
+              <>
+                <Button onClick={() => deleteSegment(selectedSegment, true)}>
+                  Merge with previous segment
+                </Button>
+                <Button onClick={() => deleteSegment(selectedSegment, false)}>
+                  Merge with next segment
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

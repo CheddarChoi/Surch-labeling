@@ -165,7 +165,7 @@ const Labels: React.FC<IProps> = (props) => {
             placeholder="Label Name (ex. Bladder + Release)"
           />
           <label className="modalLabel" htmlFor="labelKey">
-            Label Key
+            Acronym for Label Name
           </label>
           <Input
             id="labelKey"
