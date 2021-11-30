@@ -76,3 +76,11 @@
   top: 0;
   height: 48px;
 }
+
+.viewNotes {
+  position: fixed;
+  right: 18px;
+  margin: auto;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

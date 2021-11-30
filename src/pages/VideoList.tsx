@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "./redux/modules";
-import { setvideoCollectionFromDB } from "./redux/modules/videoCollection";
-import { List, Avatar } from "antd";
+import { RootState } from "../redux/modules";
+import { setvideoCollectionFromDB } from "../redux/modules/videoCollection";
+import { List, Button } from "antd";
 
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
@@ -11,20 +11,19 @@ import "./videoList.css";
 
 interface AppProps {
   history?: any;
-  uid: string;
-  username: string;
+  user: any;
+  registerNum: string;
 }
 
-const VideoList: React.FC<AppProps> = (props) => {
+const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
   const videoCollection = useSelector(
     (state: RootState) => state.setVideoCollection.videoCollection
   );
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setvideoCollectionFromDB(props.uid));
-  }, [props.uid]);
 
-  console.log(videoCollection);
+  useEffect(() => {
+    dispatch(setvideoCollectionFromDB(registerNum));
+  }, [registerNum]);
 
   const icon = (done: boolean) => {
     if (done) return <CheckCircleIcon className="done-icon" />;
@@ -33,7 +32,7 @@ const VideoList: React.FC<AppProps> = (props) => {
 
   return (
     <div className="list-container">
-      <h1 className="welcome-message">Nice to meet you, {props.username}!</h1>
+      <h1 className="welcome-message">Nice to meet you, {user.displayName}!</h1>
       <List
         itemLayout="horizontal"
         dataSource={videoCollection}

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import firebase from "./firebase";
+import firebase from "../firebase";
 import "./Auth.css";
+import { Alert, Input } from "antd";
 
 const styles = {
   fixSize: {
@@ -20,7 +21,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<any>("");
+  const [cautionMessage, setCautionMessage] = useState<string>("");
 
   const handleChange = (e: any) => {
     if (e.target.name === "email") {
@@ -33,7 +34,6 @@ const Login: React.FC<LoginProps> = (props) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // const { email, password };
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -41,19 +41,16 @@ const Login: React.FC<LoginProps> = (props) => {
         props.history.push("/");
       })
       .catch((error) => {
-        setError(error);
+        setCautionMessage(error.message);
       });
   };
 
   return (
     <div className="auth--container" style={styles.fixSize}>
       <h2 style={styles.margin}>Login to your account</h2>
-      {error && <p className="error-message">{error.message}</p>}
       <form onSubmit={handleSubmit}>
-        {/* <label htmlFor="username">Username</label> */}
-        {/* <input type="text" name="username" id="username" value={username} onChange={handleChange} /> */}
         <label htmlFor="email">Email address</label>
-        <input
+        <Input
           type="text"
           name="email"
           id="email"
@@ -61,7 +58,7 @@ const Login: React.FC<LoginProps> = (props) => {
           onChange={handleChange}
         />
         <label htmlFor="password">Enter password</label>
-        <input
+        <Input
           type="password"
           name="password"
           id="password"
@@ -69,6 +66,13 @@ const Login: React.FC<LoginProps> = (props) => {
           style={styles.margin}
           onChange={handleChange}
         />
+        {cautionMessage !== "" && (
+          <Alert
+            message={cautionMessage}
+            style={{ marginBottom: "24px" }}
+            type="error"
+          />
+        )}
         <button
           className="general-submit"
           style={styles.margin}

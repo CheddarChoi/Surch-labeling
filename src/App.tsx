@@ -1,40 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { auth } from "./firebase";
-import clsx from "clsx";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RootState } from "./redux/modules";
-import { setvideoCollectionFromDB } from "./redux/modules/videoCollection";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import "./App.css";
+
 import NoteCollection from "./note-collection";
 import { Drawer, IconButton } from "@material-ui/core";
 import { ChevronRight, ChevronLeft } from "@material-ui/icons";
 import Video from "./Video";
 import { VideoElementProvider } from "./VideoElementContext";
+import { Alert, Button } from "antd";
+
+import "./App.css";
 
 const drawerWidth = 360;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: drawerWidth,
-  },
-  title: {
-    flexGrow: 1,
-  },
   open: {
     position: "fixed",
     right: "-25px",
@@ -57,17 +39,6 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-start",
-  },
-  content: {
-    paddingLeft: "24px",
-  },
   contentShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
@@ -75,39 +46,17 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: 0,
   },
-  viewNotes: {
-    position: "fixed",
-    right: "18px",
-    margin: "auto",
-    writingMode: "vertical-rl",
-    textOrientation: "mixed",
-    // position: "fixed",
-    top: "20%",
-    width: "70px",
-    height: "250px",
-    float: "left",
-    fontSize: "1em",
-  },
 }));
 
 interface AppProps {
   history?: any;
   match?: any;
+  user: any;
+  registerNum: string;
 }
 
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC<AppProps> = ({ history, match, user, registerNum }) => {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<any>("");
-
-  useEffect(() => {
-    auth?.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-  });
 
   const classes = useStyles();
 
@@ -123,53 +72,68 @@ const App: React.FC<AppProps> = (props) => {
     (state: RootState) => state.setVideoCollection.videoCollection
   );
 
-  const videoid = props.match.params.videoid;
+  const videoid = match.params.videoid;
   var videoSrc = "";
   videoCollection.forEach((video: any) => {
     if (video.id === videoid) videoSrc = video.src;
   });
 
-  return (
-    <VideoElementProvider>
-      <div className="appbody">
-        <div
-          className={clsx(classes.content, {
-            [classes.contentShift]: open,
-          })}
-        >
-          <Video src={videoSrc} videoid={videoid} userid={user.id} />
-        </div>
-        <div>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            className={clsx(!open && classes.open, open && classes.hide)}
+  if (videoSrc !== "")
+    return (
+      <VideoElementProvider>
+        <div className="appbody">
+          <div
+            className={clsx({
+              [classes.contentShift]: open,
+            })}
+            style={{ paddingLeft: "24px" }}
           >
-            <div className={clsx(classes.viewNotes)}>View Notes</div>
-            <ChevronLeft style={{ fontSize: 40 }} />
-          </IconButton>
-          <Drawer
-            className={classes.drawer}
-            variant="persistent"
-            anchor="right"
-            open={open}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className="closebutton">
-              <IconButton onClick={handleDrawerClose}>
-                <ChevronRight />
-              </IconButton>
-            </div>
-            <NoteCollection videoid={videoid} />
-          </Drawer>
+            <Video src={videoSrc} videoid={videoid} user={user} />
+          </div>
+          <div>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerOpen}
+              className={clsx(!open && classes.open, open && classes.hide)}
+            >
+              <div className="viewNotes">View Notes</div>
+              <ChevronLeft style={{ fontSize: 40 }} />
+            </IconButton>
+            <Drawer
+              className={classes.drawer}
+              variant="persistent"
+              anchor="right"
+              open={open}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+            >
+              <div className="closebutton">
+                <IconButton onClick={handleDrawerClose}>
+                  <ChevronRight />
+                </IconButton>
+              </div>
+              <NoteCollection videoid={videoid} />
+            </Drawer>
+          </div>
         </div>
+      </VideoElementProvider>
+    );
+  else
+    return (
+      <div style={{ width: "100%", textAlign: "center", padding: "50px" }}>
+        <Alert
+          message="Wrong approach"
+          style={{ marginTop: "24px" }}
+          type="error"
+        />
+        <Button>
+          <Link to="/">Go back to video list</Link>
+        </Button>
       </div>
-    </VideoElementProvider>
-  );
+    );
 };
 
 export default App;

@@ -1,29 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-
+import firebase from "firebase";
 import App from "./App";
-import Login from "./login";
-import Register from "./register";
+import Login from "./pages/login";
+import Register from "./pages/register";
 import { auth } from "./firebase";
 import Header from "./components/Header";
-import VideoList from "./VideoList";
+import VideoList from "./pages/VideoList";
 import Footer from "./components/Footer";
 
 interface AppRouterProps {
   history?: any;
 }
 
-const AppRouter: React.FC<AppRouterProps> = (props) => {
+const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
   const [user, setUser] = useState<any>("");
+  const [registerNum, setRegisterNum] = useState<string>("");
 
-  useEffect(() => {
-    auth?.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+  auth?.onAuthStateChanged((user) => {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "==", user.uid)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const registerNum = doc.id;
+            setRegisterNum(registerNum);
+          });
+        })
+        .catch((error) => {
+          console.log("Error getting registerNum: ", error);
+        });
+      setUser(user);
+    } else {
+      setUser(null);
+    }
   });
 
   return (
@@ -35,11 +48,15 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
             <Route
               exact
               path="/"
-              render={() => (
-                <VideoList uid={user.uid} username={user.displayName} />
+              render={() => <VideoList user={user} registerNum={registerNum} />}
+            />
+            <Route
+              exact
+              path="/video/:videoid"
+              render={({ match }) => (
+                <App user={user} registerNum={registerNum} match={match} />
               )}
             />
-            <Route exact path="/video/:videoid" component={App} />
             <Redirect path="*" to="/" />
           </Switch>
           <Footer />
@@ -51,7 +68,7 @@ const AppRouter: React.FC<AppRouterProps> = (props) => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Redirect path="*" to="/login" />
+            {/* <Redirect path="/" to="/login" /> */}
           </Switch>
           <Footer />
         </>

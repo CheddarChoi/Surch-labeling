@@ -3,7 +3,7 @@ import firebase from "../../firebase";
 
 var db = firebase.firestore();
 
-const SET_LABELLIST = "segmentList/SET_LABELLIST" as const;
+const SET_LABELLIST = "labelList/SET_LABELLIST" as const;
 
 export const setList = (list: any[]) => ({
   type: SET_LABELLIST,

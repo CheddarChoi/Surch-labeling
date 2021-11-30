@@ -13,13 +13,13 @@ export const setCollection = (list: any[]) => ({
 });
 
 export const setvideoCollectionFromDB =
-  (uid: string) => (dispatch: Dispatch<setCollectionAction>) => {
-    console.log("Get video list from DB");
-    const collection: any = [];
+  (registerNum: string) => (dispatch: Dispatch<setCollectionAction>) => {
+    console.log("Get video collection from DB");
+    const collection: any[] = [];
     const ref = db.collection("videos");
     ref.get().then((snap) => {
       snap.forEach((doc) => {
-        if (doc.data().assign === uid)
+        if (doc.data().assign === registerNum)
           collection.push(Object.assign({}, { id: doc.id }, doc.data()));
       });
       dispatch(setCollection(collection));

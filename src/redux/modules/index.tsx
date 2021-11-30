@@ -7,6 +7,13 @@ import setSelectedSegment from "./selectedSegment";
 import setSegmentList from "./segmentList";
 import setLabelList from "./labelList";
 import setZoomRange from "./zoomRange";
+import storage from "redux-persist/es/storage";
+import { persistReducer } from "redux-persist";
+
+const persistConfig = {
+  key: "reducer",
+  storage,
+};
 
 const rootReducer = combineReducers({
   setVideoTime,
@@ -19,6 +26,6 @@ const rootReducer = combineReducers({
   setZoomRange,
 });
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);
 
 export type RootState = ReturnType<typeof rootReducer>;

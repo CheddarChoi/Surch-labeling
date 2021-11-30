@@ -36,7 +36,9 @@ const MusicHeader: React.FC<HeaderProps> = ({ login }) => {
               mode="horizontal"
               defaultSelectedKeys={["label"]}
             >
-              <Menu.Item key="label">Labelling</Menu.Item>
+              <Menu.Item key="label">
+                <Link to="/">Labelling</Link>
+              </Menu.Item>
             </Menu>
           </div>
           <Button className="register-btn" onClick={signout}>

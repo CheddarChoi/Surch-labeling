@@ -160,6 +160,7 @@ const Labels: React.FC<IProps> = (props) => {
             Label Name
           </label>
           <Input
+            style={{ marginBottom: "10px" }}
             id="labelName"
             onChange={(e) => setNewLabelName(e.target.value)}
             placeholder="Label Name (ex. Bladder + Release)"
@@ -168,6 +169,7 @@ const Labels: React.FC<IProps> = (props) => {
             Acronym for Label Name
           </label>
           <Input
+            style={{ marginBottom: "10px" }}
             id="labelKey"
             onChange={(e) => setNewLabelKey(e.target.value)}
             placeholder="Label Key (ex. BR)"
@@ -176,6 +178,7 @@ const Labels: React.FC<IProps> = (props) => {
             Label Color
           </label>
           <input
+            style={{ marginBottom: "10px" }}
             id="labelcolor"
             onChange={(e) => setNewLabelColor(e.target.value)}
             type="color"

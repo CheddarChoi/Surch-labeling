@@ -20,10 +20,10 @@ interface IProps {
   className?: string;
   videoid: string;
   src: string;
-  userid: string;
+  user: any;
 }
 
-const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
+const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
@@ -52,14 +52,13 @@ const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
   setVideoElement(ref && ref.current);
 
   useEffect(() => {
+    addTimeUpdate();
+  }, []);
+  useEffect(() => {
     setVideoSrc(src);
   }, [src]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
 
   const handleOk = () => {
     setIsModalVisible(false);
@@ -93,9 +92,6 @@ const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
       videoElement.playbackRate = rate;
     }
   };
-  useEffect(() => {
-    addTimeUpdate();
-  }, []);
 
   // progress 이동시켰을때 실행되는 함수
   const onProgressChange = (percent: number) => {
@@ -211,7 +207,7 @@ const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
       .update({ complete: true })
       .then(() => {
         console.log("Complete video");
-        dispatch(setvideoCollectionFromDB(userid));
+        dispatch(setvideoCollectionFromDB(user.uid));
         setIsModalVisible(true);
       })
       .catch((error) => {
@@ -289,7 +285,7 @@ const Video: React.FC<IProps> = ({ className, src, videoid, userid }) => {
       {segmentCompleted(segmentList) && (
         <div style={{ width: "100%" }}>
           <Button
-            className="completeButton"
+            style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
             type="primary"
             onClick={setComplete}
           >

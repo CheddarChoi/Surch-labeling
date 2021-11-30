@@ -12,7 +12,7 @@ import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
 import "./segment.css";
 import toTimeString from "./totimeString";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 
 interface IProps {
   totalTime: number;
@@ -99,7 +99,6 @@ const Segment: React.FC<IProps> = (props) => {
       setDivideLocked(true);
       var rect = e.target.parentNode.getBoundingClientRect();
       const timestamp = position2time(indicatorPosition / rect.width);
-      console.log(timestamp);
 
       const collection = firebase
         .firestore()
@@ -109,7 +108,6 @@ const Segment: React.FC<IProps> = (props) => {
 
       segmentList.forEach((segment: any) => {
         if (segment.startTime < timestamp && segment.endTime > timestamp) {
-          console.log(segment);
           collection
             .add({
               startTime: timestamp,
@@ -117,7 +115,6 @@ const Segment: React.FC<IProps> = (props) => {
               label: segment.label,
             })
             .then(() => {
-              console.log("Added");
               collection
                 .doc(segment.id)
                 .update({ endTime: timestamp })
@@ -156,7 +153,6 @@ const Segment: React.FC<IProps> = (props) => {
         .doc(updateSegment.id)
         .update({ startTime: delSegment.startTime, label: delSegment.label })
         .then(() => {
-          console.log("Updated");
           collection
             .doc(delSegment.id)
             .delete()
@@ -242,7 +238,7 @@ const Segment: React.FC<IProps> = (props) => {
   return (
     <div className="segment-container">
       <div style={{ position: "relative" }}>
-        {timestamps(zoomRangeStartTime, zoomRangeEndTime, 8)}
+        {timestamps(zoomRangeStartTime, zoomRangeEndTime, 4)}
         <div className="segments">
           {segmentList.map((segment: any) => {
             if (
@@ -316,8 +312,7 @@ const Segment: React.FC<IProps> = (props) => {
               </div>
             </div>
           </div>
-          <div>
-            <Button onClick={deleteAllSegment}>Reset all segments</Button>
+          <div style={{ width: "100%", marginTop: "12px", display: "flex" }}>
             {selectedSegment !== "" && (
               <>
                 <Button onClick={() => deleteSegment(selectedSegment, true)}>
@@ -328,6 +323,18 @@ const Segment: React.FC<IProps> = (props) => {
                 </Button>
               </>
             )}
+            <Tooltip title="All segment length and labels will be initialized">
+              <Button
+                style={{
+                  display: "flex",
+                  marginLeft: "auto",
+                  marginRight: "0",
+                }}
+                onClick={deleteAllSegment}
+              >
+                Reset all segments
+              </Button>
+            </Tooltip>
           </div>
         </div>
       </div>

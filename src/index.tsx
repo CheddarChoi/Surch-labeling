@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import firebase from "firebase";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -8,16 +9,27 @@ import rootReducer from "./redux/modules";
 import "./index.css";
 import AppRouter from "./AppRouter";
 import reportWebVitals from "./reportWebVitals";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
 /* eslint-disable no-underscore-dangle */
-const store = createStore(
+const store: any = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+const persistor = persistStore(store);
+
 /* eslint-enable */
 ReactDOM.render(
-  <Provider store={store}>
-    <AppRouter />
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppRouter />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
