@@ -54,7 +54,12 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
               exact
               path="/video/:videoid"
               render={({ match }) => (
-                <App user={user} registerNum={registerNum} match={match} />
+                <App
+                  user={user}
+                  registerNum={registerNum}
+                  match={match}
+                  history={history}
+                />
               )}
             />
             <Redirect path="*" to="/" />
@@ -68,7 +73,6 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            {/* <Redirect path="/" to="/login" /> */}
           </Switch>
           <Footer />
         </>

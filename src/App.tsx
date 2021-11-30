@@ -88,7 +88,12 @@ const App: React.FC<AppProps> = ({ history, match, user, registerNum }) => {
             })}
             style={{ paddingLeft: "24px" }}
           >
-            <Video src={videoSrc} videoid={videoid} user={user} />
+            <Video
+              src={videoSrc}
+              videoid={videoid}
+              user={user}
+              registerNum={registerNum}
+            />
           </div>
           <div>
             <IconButton

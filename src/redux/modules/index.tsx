@@ -13,6 +13,7 @@ import { persistReducer } from "redux-persist";
 const persistConfig = {
   key: "reducer",
   storage,
+  blacklist: ["setVideoDTime", "setVideoTime", "setZoomRange"],
 };
 
 const rootReducer = combineReducers({

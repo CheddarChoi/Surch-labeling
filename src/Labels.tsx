@@ -172,7 +172,7 @@ const Labels: React.FC<IProps> = (props) => {
             style={{ marginBottom: "10px" }}
             id="labelKey"
             onChange={(e) => setNewLabelKey(e.target.value)}
-            placeholder="Label Key (ex. BR)"
+            placeholder="Acronym for Label (ex. BR)"
           />
           <label className="modalLabel" htmlFor="labelcolor">
             Label Color

@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
 import Labels from "./Labels";
 import Controlbar from "./Controlbar";
-import { Button, Modal, Slider } from "antd";
+import { Button, Modal, Slider, Tooltip } from "antd";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,9 +21,16 @@ interface IProps {
   videoid: string;
   src: string;
   user: any;
+  registerNum: string;
 }
 
-const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
+const Video: React.FC<IProps> = ({
+  className,
+  src,
+  videoid,
+  user,
+  registerNum,
+}) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
@@ -34,9 +41,6 @@ const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
 
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
-  );
-  const segmentList = useSelector(
-    (state: RootState) => state.setSegmentList.segmentList
   );
   const dispatch = useDispatch();
 
@@ -207,7 +211,7 @@ const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
       .update({ complete: true })
       .then(() => {
         console.log("Complete video");
-        dispatch(setvideoCollectionFromDB(user.uid));
+        dispatch(setvideoCollectionFromDB(registerNum));
         setIsModalVisible(true);
       })
       .catch((error) => {
@@ -225,7 +229,7 @@ const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
         >
           <video
             loop={false}
-            muted={true}
+            muted={false}
             ref={ref}
             playsInline={true}
             onClick={onPlayIconClick}
@@ -282,8 +286,9 @@ const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
       </div>
       <Segment totalTime={totalTime} videoid={videoid} />
       <br />
-      {segmentCompleted(segmentList) && (
-        <div style={{ width: "100%" }}>
+
+      <div style={{ width: "100%" }}>
+        <Tooltip title="Complete labeling for this video">
           <Button
             style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
             type="primary"
@@ -292,8 +297,8 @@ const Video: React.FC<IProps> = ({ className, src, videoid, user }) => {
             Complete
             <ArrowForward />
           </Button>
-        </div>
-      )}
+        </Tooltip>
+      </div>
       <Modal
         visible={isModalVisible}
         title="Complete!"

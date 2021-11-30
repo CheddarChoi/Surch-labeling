@@ -32,7 +32,7 @@ const Controlbar: React.FC<IProps> = ({
   nowPlaying,
   videoElement,
 }) => {
-  const [volumeClicked, setVolumeClicked] = useState(false);
+  const [volumeClicked, setVolumeClicked] = useState(true);
 
   const playControlClassProps = classNames(styles.playWrapper, {
     [styles.fadeIn]: showControl,
