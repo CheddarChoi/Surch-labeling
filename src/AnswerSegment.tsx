@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/modules";
 
 import "./segment.css";
-import toTimeString from "./totimeString";
 import { textColorByBG } from "./variables/helperfuctions";
 
 interface IProps {
@@ -65,20 +64,6 @@ const AnswerSegment: React.FC<IProps> = (props) => {
       if (label.label === key) color = label.color;
     });
     return color;
-  };
-
-  const timestamps = (startTime: number, endTime: number, step: number) => {
-    var times = [];
-    for (var i = 0; i <= step; i++) {
-      times.push((startTime * (step - i) + endTime * i) / step);
-    }
-    return (
-      <div className="timestamp-container">
-        {times.map((t) => (
-          <div className="timestamp">{toTimeString(t)}</div>
-        ))}
-      </div>
-    );
   };
 
   return (

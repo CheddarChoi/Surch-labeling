@@ -51,9 +51,6 @@
   overflow: hidden;
   /* text-overflow: ellipsis; */
 }
-.segment-del {
-  /* visibility: hidden; */
-}
 
 .icon-bar-container {
   display: flex;

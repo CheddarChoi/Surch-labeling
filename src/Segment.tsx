@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import firebase from "./firebase";
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/modules";
 import { setSelected } from "./redux/modules/selectedSegment";
 
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { ScissorOutlined } from "@ant-design/icons";
 
 import { setSegmentListFromDB } from "./redux/modules/segmentList";
@@ -13,8 +12,6 @@ import { setSegmentListFromDB } from "./redux/modules/segmentList";
 import "./segment.css";
 import toTimeString from "./totimeString";
 import { Button, Tooltip, Spin, Switch } from "antd";
-import { setTime } from "./redux/modules/videoTime";
-import TimeProgressBar from "./TimeProgressBar";
 import { textColorByBG } from "./variables/helperfuctions";
 import AnswerSegment from "./AnswerSegment";
 
@@ -45,7 +42,7 @@ const Segment: React.FC<IProps> = (props) => {
 
   const dispatch = useDispatch();
 
-  const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
+  // const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
   const [answer, setAnswer] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [divideLocked, setDivideLocked] = useState<boolean>(false);
@@ -60,11 +57,11 @@ const Segment: React.FC<IProps> = (props) => {
   //   document.addEventListener("keydown", handleKeyEvent, false);
   // }, []);
 
-  useEffect(() => {
-    changeSegment("");
-    if (props.totalTime !== 0)
-      dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
-  }, [props.totalTime]);
+  // useEffect(() => {
+  //   changeSegment("");
+  //   if (props.totalTime !== 0)
+  //     dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
+  // }, [props.totalTime]);
 
   // ------- Helper Functions ------- //
   const time2width = (startTime: number, endTime: number) => {
@@ -85,8 +82,8 @@ const Segment: React.FC<IProps> = (props) => {
   const time2position = (timestamp: number) =>
     ((timestamp - zoomRangeStartTime) * 100) /
     (zoomRangeEndTime - zoomRangeStartTime);
-  const position2time = (position: number) =>
-    position * (zoomRangeEndTime - zoomRangeStartTime) - zoomRangeStartTime;
+  // const position2time = (position: number) =>
+  //   position * (zoomRangeEndTime - zoomRangeStartTime) - zoomRangeStartTime;
   const key2color = (key: string) => {
     var color = "#FFFFFF";
     labelList.forEach((label: any) => {
@@ -95,12 +92,12 @@ const Segment: React.FC<IProps> = (props) => {
     return color;
   };
 
-  const displayHoverIndicator = (e: any) => {
-    var rect = e.target.parentNode.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    if (x <= rect.width)
-      x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
-  };
+  // const displayHoverIndicator = (e: any) => {
+  //   var rect = e.target.parentNode.getBoundingClientRect();
+  //   var x = e.clientX - rect.left;
+  //   if (x <= rect.width)
+  //     x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
+  // };
   const divideSegment = (timestamp: number) => {
     if (!divideLocked) {
       setDivideLocked(true);
@@ -221,12 +218,12 @@ const Segment: React.FC<IProps> = (props) => {
       .then(dispatch(setSegmentListFromDB(props.videoid, props.totalTime)));
   };
 
-  const handleKeyEvent = (e: any) => {
-    console.log("keyEvent:" + e.keyCode + " selected: " + selectedSegment);
-    var keycode = e.keyCode;
-    if (keycode === 8 && selectedSegment !== "")
-      deleteSegment(selectedSegment, true);
-  };
+  // const handleKeyEvent = (e: any) => {
+  //   console.log("keyEvent:" + e.keyCode + " selected: " + selectedSegment);
+  //   var keycode = e.keyCode;
+  //   if (keycode === 8 && selectedSegment !== "")
+  //     deleteSegment(selectedSegment, true);
+  // };
 
   const timestamps = (startTime: number, endTime: number, step: number) => {
     var times = [];
