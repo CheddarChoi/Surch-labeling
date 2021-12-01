@@ -10,6 +10,7 @@ import { labels } from "./variables/label-info";
 import { setSegmentListFromDB } from "./redux/modules/segmentList";
 import { Alert, Input, Modal } from "antd";
 import { setLabelListFromDB } from "./redux/modules/labelList";
+import { textColorByBG } from "./variables/helperfuctions";
 
 interface IProps {
   videoid: string;
@@ -140,14 +141,18 @@ const Labels: React.FC<IProps> = (props) => {
         {labelList.map((l: any) => (
           <div
             className="surch-label"
-            style={{ backgroundColor: l.color }}
+            style={{ backgroundColor: l.color, color: textColorByBG(l.color) }}
             onClick={() => setLabelonSegment(l.label)}
           >
             {l.name}
           </div>
         ))}
         {/* <Button onClick={addAllLabels}>Add all labels</Button> */}
-        <div className="surch-label" onClick={showModal}>
+        <div
+          className="surch-label"
+          style={{ backgroundColor: "#1890ff", color: "white" }}
+          onClick={showModal}
+        >
           + Add New Label
         </div>
         <Modal

@@ -2,8 +2,11 @@
   width: 100%;
   margin-top: 20px;
 
-  border: solid 1px black;
-  padding: 10px 20px;
+  /* border: solid 1px black; */
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
+  border-radius: 15px;
 }
 .segments {
   display: flex;
@@ -42,8 +45,11 @@
 }
 
 .segment-name {
+  margin: 10px;
   text-align: center;
   font-weight: bold;
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
 }
 .segment-del {
   /* visibility: hidden; */
@@ -57,14 +63,13 @@
   transform: translateX(-50%);
 
   position: absolute;
-  top: 0px;
-  color: #0c73ec;
+  top: -10px;
 }
 .curr-timestamp {
-  height: 90px;
+  height: 110px;
   width: 2px;
   margin-top: -2px;
-  background-color: #0c73ec;
+  background-color: black;
 }
 
 .hover-container {
@@ -91,4 +96,22 @@
   width: 1px;
   border: solid 1px black;
   background-color: black;
+}
+
+.scissor-button {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+  margin-bottom: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mini-progressbar .ant-slider-track {
+  background-color: transparent !important;
 }

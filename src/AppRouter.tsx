@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import firebase from "firebase";
 import App from "./App";
@@ -8,6 +8,7 @@ import { auth } from "./firebase";
 import Header from "./components/Header";
 import VideoList from "./pages/VideoList";
 import Footer from "./components/Footer";
+import Admin from "./pages/Admin";
 
 interface AppRouterProps {
   history?: any;
@@ -42,7 +43,7 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
   return (
     <BrowserRouter>
       {user && (
-        <>
+        <div style={{ backgroundColor: "#f7f7f7" }}>
           <Header login={true} />
           <Switch>
             <Route
@@ -62,20 +63,22 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                 />
               )}
             />
+            <Route path="/admin" component={Admin} />
             <Redirect path="*" to="/" />
           </Switch>
           <Footer />
-        </>
+        </div>
       )}
       {!user && (
-        <>
+        <div style={{ backgroundColor: "#f7f7f7" }}>
           <Header login={false} />
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/admin" component={Admin} />
           </Switch>
           <Footer />
-        </>
+        </div>
       )}
     </BrowserRouter>
   );

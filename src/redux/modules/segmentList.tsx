@@ -30,7 +30,7 @@ export const setSegmentListFromDB =
         const newSegment = {
           startTime: 0,
           endTime: videoDTime,
-          label: "undefined",
+          label: "Unlabeled",
         };
         const segmentCollection = db
           .collection("videos")

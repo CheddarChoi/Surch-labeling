@@ -103,7 +103,7 @@ const App: React.FC<AppProps> = ({ history, match, user, registerNum }) => {
               onClick={handleDrawerOpen}
               className={clsx(!open && classes.open, open && classes.hide)}
             >
-              <div className="viewNotes">View Notes</div>
+              <div className="viewNotes">Notes</div>
               <ChevronLeft style={{ fontSize: 40 }} />
             </IconButton>
             <Drawer

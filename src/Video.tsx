@@ -42,6 +42,9 @@ const Video: React.FC<IProps> = ({
   const videoTime = useSelector(
     (state: RootState) => state.setVideoTime.videoTime
   );
+  const segmentList = useSelector(
+    (state: RootState) => state.setSegmentList.segmentList
+  );
   const dispatch = useDispatch();
 
   const setVideoTime = (time: number) => {
@@ -200,7 +203,7 @@ const Video: React.FC<IProps> = ({
   const segmentCompleted = (list: any) => {
     var complete = true;
     list.forEach((l: any) => {
-      if (l.label === "undefined") complete = false;
+      if (l.label === "Unlabeled") complete = false;
     });
     return complete;
   };
@@ -254,7 +257,7 @@ const Video: React.FC<IProps> = ({
         <div className="label-or-note">
           <div className="note-and-slider-container">
             <div className="slider-container">
-              <h4>Video Speed</h4>
+              <h3>Video Speed</h3>
               <Slider
                 id="playbackslider"
                 marks={marks}
@@ -286,19 +289,20 @@ const Video: React.FC<IProps> = ({
       </div>
       <Segment totalTime={totalTime} videoid={videoid} />
       <br />
-
-      <div style={{ width: "100%" }}>
-        <Tooltip title="Complete labeling for this video">
-          <Button
-            style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
-            type="primary"
-            onClick={setComplete}
-          >
-            Complete
-            <ArrowForward />
-          </Button>
-        </Tooltip>
-      </div>
+      {segmentCompleted(segmentList) && (
+        <div style={{ width: "100%" }}>
+          <Tooltip title="Complete labeling for this video">
+            <Button
+              style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
+              type="primary"
+              onClick={setComplete}
+            >
+              Complete
+              <ArrowForward />
+            </Button>
+          </Tooltip>
+        </div>
+      )}
       <Modal
         visible={isModalVisible}
         title="Complete!"

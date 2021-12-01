@@ -19,3 +19,13 @@
   height: 32px !important;
   color: #646464;
 }
+
+.icon-wrapper {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

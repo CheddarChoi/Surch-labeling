@@ -12,7 +12,11 @@ import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
 import "./segment.css";
 import toTimeString from "./totimeString";
-import { Button, Tooltip } from "antd";
+import { Button, Tooltip, Spin, Switch } from "antd";
+import { setTime } from "./redux/modules/videoTime";
+import TimeProgressBar from "./TimeProgressBar";
+import { textColorByBG } from "./variables/helperfuctions";
+import AnswerSegment from "./AnswerSegment";
 
 interface IProps {
   totalTime: number;
@@ -42,7 +46,10 @@ const Segment: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
 
   const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
+  const [answer, setAnswer] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [divideLocked, setDivideLocked] = useState<boolean>(false);
+  const isTutorial = props.videoid.includes("tutorial");
 
   const changeSegment = (id: string) => {
     dispatch(setSelected(id));
@@ -94,11 +101,10 @@ const Segment: React.FC<IProps> = (props) => {
     if (x <= rect.width)
       x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
   };
-  const divideSegment = (e: any) => {
+  const divideSegment = (timestamp: number) => {
     if (!divideLocked) {
       setDivideLocked(true);
-      var rect = e.target.parentNode.getBoundingClientRect();
-      const timestamp = position2time(indicatorPosition / rect.width);
+      setLoading(true);
 
       const collection = firebase
         .firestore()
@@ -124,6 +130,7 @@ const Segment: React.FC<IProps> = (props) => {
                     setSegmentListFromDB(props.videoid, props.totalTime)
                   );
                   setDivideLocked(false);
+                  setLoading(false);
                 })
                 .catch((error) => {
                   console.error("Error updating document: ", error);
@@ -151,7 +158,7 @@ const Segment: React.FC<IProps> = (props) => {
       const updateSegment = segmentList.at(delIndex + 1);
       collection
         .doc(updateSegment.id)
-        .update({ startTime: delSegment.startTime, label: delSegment.label })
+        .update({ startTime: delSegment.startTime })
         .then(() => {
           collection
             .doc(delSegment.id)
@@ -172,7 +179,7 @@ const Segment: React.FC<IProps> = (props) => {
       const updateSegment = segmentList.at(delIndex - 1);
       collection
         .doc(updateSegment.id)
-        .update({ endTime: delSegment.endTime, label: delSegment.label })
+        .update({ endTime: delSegment.endTime })
         .then(() => {
           console.log("Updated");
           collection
@@ -237,8 +244,52 @@ const Segment: React.FC<IProps> = (props) => {
 
   return (
     <div className="segment-container">
+      {isTutorial && (
+        <div
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            marginBottom: "20px",
+            display: "flex",
+          }}
+        >
+          <div
+            style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
+          >
+            <Switch
+              checkedChildren="Show"
+              unCheckedChildren="Hide"
+              onClick={() => setAnswer(!answer)}
+            />
+            <h4 style={{ marginLeft: "10px" }}>Answer</h4>
+          </div>
+        </div>
+      )}
+
       <div style={{ position: "relative" }}>
         {timestamps(zoomRangeStartTime, zoomRangeEndTime, 4)}
+        <div style={{ width: "100%", position: "relative" }}>
+          {time2position(videoTime) >= 0 && !answer && (
+            <div
+              className="icon-bar-container"
+              style={{ left: time2position(videoTime) + "%" }}
+            >
+              <div className="curr-timestamp"></div>
+              <div
+                className="scissor-button"
+                onClick={() => divideSegment(videoTime)}
+              >
+                <ScissorOutlined style={{ fontSize: "16px", color: "white" }} />
+              </div>
+              {loading && (
+                <Spin
+                  size="small"
+                  style={{ position: "fixed", bottom: "0", left: "32px" }}
+                />
+              )}
+            </div>
+          )}
+        </div>
         <div className="segments">
           {segmentList.map((segment: any) => {
             if (
@@ -257,8 +308,11 @@ const Segment: React.FC<IProps> = (props) => {
                     }}
                     onClick={() => changeSegment("")}
                   >
-                    <div className="segment-name">
-                      {segment.label === null ? "undefined" : segment.label}
+                    <div
+                      className="segment-name"
+                      style={{ color: textColorByBG(key2color(segment.label)) }}
+                    >
+                      {segment.label === null ? "Unlabeled" : segment.label}
                     </div>
                   </div>
                 );
@@ -274,21 +328,23 @@ const Segment: React.FC<IProps> = (props) => {
                     }}
                     onClick={() => changeSegment(segment.id)}
                   >
-                    <div className="segment-name">
-                      {segment.label === null ? "undefined" : segment.label}
+                    <div
+                      className="segment-name"
+                      style={{ color: textColorByBG(key2color(segment.label)) }}
+                    >
+                      {segment.label === null ? "Unlabeled" : segment.label}
                     </div>
                   </div>
                 );
             }
           })}
-          <div
-            className="icon-bar-container"
-            style={{ left: time2position(videoTime) + "%" }}
-          >
-            <PlayCircleFilledIcon />
-            <div className="curr-timestamp"></div>
-          </div>
-          <div
+          {answer && (
+            <>
+              <div style={{ width: "100%", margin: "10px 0" }} />
+              <AnswerSegment totalTime={props.totalTime} videoid={"video001"} />
+            </>
+          )}
+          {/* <div
             className="hover-container"
             onMouseOut={(e) => setIndicatorPosition(0)}
             onMouseMove={(e) => displayHoverIndicator(e)}
@@ -311,15 +367,15 @@ const Segment: React.FC<IProps> = (props) => {
                 <ScissorOutlined style={{ fontSize: "16px", color: "white" }} />
               </div>
             </div>
-          </div>
-          <div style={{ width: "100%", marginTop: "12px", display: "flex" }}>
+          </div> */}
+          <div style={{ width: "100%", marginTop: "50px", display: "flex" }}>
             {selectedSegment !== "" && (
               <>
                 <Button onClick={() => deleteSegment(selectedSegment, true)}>
-                  Merge with previous segment
+                  Merge to previous segment
                 </Button>
                 <Button onClick={() => deleteSegment(selectedSegment, false)}>
-                  Merge with next segment
+                  Merge to next segment
                 </Button>
               </>
             )}

@@ -72,7 +72,6 @@
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 7px;
-  font-family: "Open Sans", SemiBold;
   font-size: 16px;
   color: white;
   text-align: center;
@@ -86,7 +85,6 @@
   flex-shrink: 0;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 7px 0 0 7px;
-  font-family: "Open Sans", SemiBold;
   font-size: 11px;
   color: white;
   text-align: center;

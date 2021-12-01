@@ -15,16 +15,21 @@ export const setList = (list: any[]) => ({
 export const setLabelListFromDB =
   (uid: string) => (dispatch: Dispatch<setListAction>) => {
     console.log("Get labels list from DB");
-    const collection: any = [];
-    const ref = db.collection("labels").orderBy("created");
-    ref.get().then((snap) => {
-      snap.forEach((doc) => {
-        const docdata = doc.data();
-        if (docdata.user === "global" || docdata.user === uid)
-          collection.push(Object.assign({}, { id: doc.id }, docdata));
+
+    db.collection("labels")
+      .orderBy("created")
+      .get()
+      .then((querySnapshot) => {
+        var list: Object[] = [];
+        querySnapshot.forEach((doc: any) => {
+          if (doc.data().user === "global" || doc.data().user === uid)
+            list.push(Object.assign({}, { id: doc.id }, doc.data()));
+        });
+        dispatch(setList(list));
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
-      dispatch(setList(collection));
-    });
   };
 
 type setListAction = ReturnType<typeof setList>;

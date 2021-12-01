@@ -15,15 +15,19 @@ export const setCollection = (list: any[]) => ({
 export const setvideoCollectionFromDB =
   (registerNum: string) => (dispatch: Dispatch<setCollectionAction>) => {
     console.log("Get video collection from DB");
-    const collection: any[] = [];
-    const ref = db.collection("videos");
-    ref.get().then((snap) => {
-      snap.forEach((doc) => {
-        if (doc.data().assign === registerNum)
+    db.collection("videos")
+      .where("assign", "==", registerNum)
+      .get()
+      .then((querySnapshot) => {
+        var collection: Object[] = [];
+        querySnapshot.forEach((doc: any) => {
           collection.push(Object.assign({}, { id: doc.id }, doc.data()));
+        });
+        dispatch(setCollection(collection));
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
-      dispatch(setCollection(collection));
-    });
   };
 
 type setCollectionAction = ReturnType<typeof setCollection>;

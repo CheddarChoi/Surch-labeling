@@ -70,18 +70,26 @@ const NoteCollection: React.FC<noteCollectionProps> = (props) => {
             <List.Item>
               <List.Item.Meta
                 title={
-                  <div onClick={() => linkToTime(note.videoTimestamp)}>
-                    <a>{toTimeString(note.videoTimestamp)}</a>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    <div onClick={() => linkToTime(note.videoTimestamp)}>
+                      <a>{toTimeString(note.videoTimestamp)}</a>
+                    </div>
+                    <Button
+                      size="small"
+                      icon={<DeleteOutlined />}
+                      onClick={() => deleteNote(note)}
+                    ></Button>
                   </div>
                 }
                 description={note.content}
               />
-              <div>
-                <Button
-                  icon={<DeleteOutlined />}
-                  onClick={() => deleteNote(note)}
-                ></Button>
-              </div>
             </List.Item>
           )}
         />

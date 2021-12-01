@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/modules";
 import { setvideoCollectionFromDB } from "../redux/modules/videoCollection";
-import { List, Button } from "antd";
+import { List, Button, Tooltip } from "antd";
 
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import "./videoList.css";
+import {
+  CheckOutlined,
+  ExclamationOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 
 interface AppProps {
   history?: any;
@@ -40,9 +43,34 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
       });
   };
 
-  const icon = (done: boolean) => {
-    if (done) return <CheckCircleIcon className="done-icon" />;
-    else return <RemoveCircleIcon className="todo-icon" />;
+  const icon = (type: string) => {
+    if (type === "tutorial")
+      return (
+        <Tooltip title="Tutorial">
+          <div
+            className="icon-wrapper"
+            style={{ backgroundColor: "rgb(241, 201, 19)" }}
+          >
+            <StarFilled style={{ color: "white" }} />
+          </div>
+        </Tooltip>
+      );
+    else if (type === "complete")
+      return (
+        <Tooltip title="Complete">
+          <div className="icon-wrapper" style={{ backgroundColor: "#1a90ff" }}>
+            <CheckOutlined style={{ color: "white" }} />
+          </div>
+        </Tooltip>
+      );
+    else if (type === "incomplete")
+      return (
+        <Tooltip title="Incomplete">
+          <div className="icon-wrapper" style={{ backgroundColor: "#777777" }}>
+            <ExclamationOutlined style={{ color: "white" }} />
+          </div>
+        </Tooltip>
+      );
   };
 
   return (
@@ -52,13 +80,24 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
         itemLayout="horizontal"
         dataSource={videoCollection}
         renderItem={(video: any) => {
-          if (video.complete)
+          if (video.id.includes("tutorial"))
             return (
               <List.Item>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={icon(video.complete)}
-                  title={video.title}
+                  avatar={icon("tutorial")}
+                  title={<Link to={"/video/" + video.id}>{video.title}</Link>}
+                  description={video.author}
+                />
+              </List.Item>
+            );
+          else if (video.complete)
+            return (
+              <List.Item>
+                <List.Item.Meta
+                  style={{ alignItems: "center" }}
+                  avatar={icon("complete")}
+                  title={<Link to={"/video/" + video.id}>{video.title}</Link>}
                   description={video.author}
                 />
                 <div>
@@ -73,7 +112,7 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
               <List.Item>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={icon(video.complete)}
+                  avatar={icon("incomplete")}
                   title={<Link to={"/video/" + video.id}>{video.title}</Link>}
                   description={video.author}
                 />

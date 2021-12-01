@@ -13,5 +13,5 @@ export const labels = [
   { name: "Prostate Apex + Dissection", label: "PD", color: "#99E0FF" },
   { name: "Vesicourethral Anastomosis", label: "VA", color: "#99C2FF" },
   { name: "Bladder neck and urethra + Suture", label: "BUS", color: "#80BA89" },
-  { name: "Undefined", label: "undefined", color: "#DDDDDD" },
+  { name: "Unlabeled", label: "Unlabeled", color: "#DDDDDD" },
 ];
