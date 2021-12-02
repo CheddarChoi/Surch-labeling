@@ -20,7 +20,6 @@ interface AppProps {
   user: any;
   registerNum: string;
   approved: boolean;
-  admin: boolean;
 }
 
 const VideoList: React.FC<AppProps> = ({
@@ -52,10 +51,17 @@ const VideoList: React.FC<AppProps> = ({
       });
   };
 
+  const countAll = (collection: any[]) => {
+    var res = 0;
+    collection.forEach((c) => {
+      if (c.assign === registerNum) res++;
+    });
+    return res;
+  };
   const countComplete = (collection: any[]) => {
     var res = 0;
     collection.forEach((c) => {
-      if (c.complete) res++;
+      if (c.complete && c.assign === registerNum) res++;
     });
     return res;
   };
@@ -117,7 +123,7 @@ const VideoList: React.FC<AppProps> = ({
       {approved ? (
         <h3 style={{ marginBottom: "20px" }}>
           You've completed {countComplete(videoCollection) - 3}/
-          {videoCollection.length - 3} videos
+          {countAll(videoCollection) - 3} videos
         </h3>
       ) : (
         <h3 style={{ marginBottom: "20px" }}>
@@ -128,76 +134,80 @@ const VideoList: React.FC<AppProps> = ({
         itemLayout="horizontal"
         dataSource={videoCollection}
         renderItem={(video: any) => {
-          if (video.id.includes("tutorial"))
-            return (
-              <List.Item>
-                <List.Item.Meta
-                  style={{ alignItems: "center" }}
-                  avatar={
-                    video.complete ? icon("tutorialComplete") : icon("tutorial")
-                  }
-                  title={<Link to={"/video/" + video.id}>{video.title}</Link>}
-                  description={video.author}
-                />
-              </List.Item>
-            );
-          else if (approved) {
-            return (
-              <List.Item>
-                <List.Item.Meta
-                  style={{ alignItems: "center" }}
-                  avatar={
-                    video.complete ? icon("complete") : icon("incomplete")
-                  }
-                  title={<Link to={"/video/" + video.id}>{video.title}</Link>}
-                  description={video.author}
-                />
-                {video.complete && (
-                  <div>
-                    <Button onClick={() => unmark(video)}>
-                      Mark as imcomplete
-                    </Button>
-                  </div>
-                )}
-              </List.Item>
-            );
-          } else {
-            return (
-              <List.Item>
-                <List.Item.Meta
-                  style={{ alignItems: "center" }}
-                  avatar={icon("wait")}
-                  title={
-                    <Tooltip
-                      placement="bottomLeft"
-                      title="Please wait for tutorial approval"
-                    >
+          if (video.assign === registerNum) {
+            if (video.id.includes("tutorial"))
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    style={{ alignItems: "center" }}
+                    avatar={
+                      video.complete
+                        ? icon("tutorialComplete")
+                        : icon("tutorial")
+                    }
+                    title={<Link to={"/video/" + video.id}>{video.title}</Link>}
+                    description={video.author}
+                  />
+                </List.Item>
+              );
+            else if (approved) {
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    style={{ alignItems: "center" }}
+                    avatar={
+                      video.complete ? icon("complete") : icon("incomplete")
+                    }
+                    title={<Link to={"/video/" + video.id}>{video.title}</Link>}
+                    description={video.author}
+                  />
+                  {video.complete && (
+                    <div>
+                      <Button onClick={() => unmark(video)}>
+                        Mark as imcomplete
+                      </Button>
+                    </div>
+                  )}
+                </List.Item>
+              );
+            } else {
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    style={{ alignItems: "center" }}
+                    avatar={icon("wait")}
+                    title={
+                      <Tooltip
+                        placement="bottomLeft"
+                        title="Please wait for tutorial approval"
+                      >
+                        <div
+                          style={{
+                            width: video.title.length * 5 + "px",
+                            height: "12px",
+                            margin: "4px 0",
+                            borderRadius: "1px",
+                            backgroundColor: "lightgray",
+                          }}
+                        />
+                      </Tooltip>
+                    }
+                    description={
                       <div
                         style={{
-                          width: video.title.length * 5 + "px",
-                          height: "12px",
-                          margin: "4px 0",
+                          width: video.author.length * 5 + "px",
+                          height: "8px",
+                          marginTop: "12px",
+                          marginBottom: "4px",
                           borderRadius: "1px",
                           backgroundColor: "lightgray",
                         }}
                       />
-                    </Tooltip>
-                  }
-                  description={
-                    <div
-                      style={{
-                        width: video.author.length * 5 + "px",
-                        height: "8px",
-                        marginTop: "12px",
-                        marginBottom: "4px",
-                        borderRadius: "1px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                  }
-                />
-              </List.Item>
-            );
+                    }
+                  />
+                </List.Item>
+              );
+            }
           }
         }}
       />

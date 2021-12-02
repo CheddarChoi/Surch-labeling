@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import VideoList from "./pages/VideoList";
 import Footer from "./components/Footer";
 import Admin from "./pages/Admin";
+import VideoListAdmin from "./pages/VideoListAdmin";
 
 interface AppRouterProps {
   history?: any;
@@ -56,7 +57,6 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                   user={user}
                   registerNum={registerNum}
                   approved={approved}
-                  admin={false}
                 />
               )}
             />
@@ -73,17 +73,16 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                 />
               )}
             />
-            {registerNum === "test" && (
+            {(!registerNum || registerNum === "test") && (
               <>
                 <Route
                   exact
                   path="/list"
                   render={() => (
-                    <VideoList
+                    <VideoListAdmin
                       user={user}
                       registerNum={registerNum}
                       approved={approved}
-                      admin={true}
                     />
                   )}
                 />
