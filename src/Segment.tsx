@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "./firebase";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -57,11 +57,11 @@ const Segment: React.FC<IProps> = (props) => {
   //   document.addEventListener("keydown", handleKeyEvent, false);
   // }, []);
 
-  // useEffect(() => {
-  //   changeSegment("");
-  //   if (props.totalTime !== 0)
-  //     dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
-  // }, [props.totalTime]);
+  useEffect(() => {
+    changeSegment("");
+    if (props.totalTime !== 0)
+      dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
+  }, [props.totalTime]);
 
   // ------- Helper Functions ------- //
   const time2width = (startTime: number, endTime: number) => {
@@ -99,6 +99,7 @@ const Segment: React.FC<IProps> = (props) => {
   //     x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
   // };
   const divideSegment = (timestamp: number) => {
+    console.log("divide!");
     if (!divideLocked) {
       setDivideLocked(true);
       setLoading(true);
@@ -110,7 +111,10 @@ const Segment: React.FC<IProps> = (props) => {
         .collection("segments");
 
       segmentList.forEach((segment: any) => {
+        console.log(segment);
+
         if (segment.startTime < timestamp && segment.endTime > timestamp) {
+          console.log(segment);
           collection
             .add({
               startTime: timestamp,
@@ -118,6 +122,7 @@ const Segment: React.FC<IProps> = (props) => {
               label: segment.label,
             })
             .then(() => {
+              console.log("Added");
               collection
                 .doc(segment.id)
                 .update({ endTime: timestamp })
