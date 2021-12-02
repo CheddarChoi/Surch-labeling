@@ -244,6 +244,7 @@ const Video: React.FC<IProps> = ({
               onLoadedMetadata={handleLoadedMDN}
               style={{
                 cursor: "pointer",
+                width: "100%",
               }}
             />
           ) : (
@@ -257,6 +258,7 @@ const Video: React.FC<IProps> = ({
               crossOrigin="Anonymous"
               style={{
                 cursor: "pointer",
+                width: "100%",
               }}
             >
               <source src={videoSrc} type="video/mp4" />
