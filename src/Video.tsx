@@ -245,6 +245,7 @@ const Video: React.FC<IProps> = ({
               style={{
                 cursor: "pointer",
                 width: "100%",
+                height: "100%",
               }}
             />
           ) : (
@@ -259,6 +260,7 @@ const Video: React.FC<IProps> = ({
               style={{
                 cursor: "pointer",
                 width: "100%",
+                height: "100%",
               }}
             >
               <source src={videoSrc} type="video/mp4" />

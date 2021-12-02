@@ -80,9 +80,9 @@ const Admin: React.FC<AdminProps> = (props) => {
       <Button onClick={() => addAllVideos(tutorialvideoInfo)}>
         Add tutorial videos to firebase
       </Button>
-      {/* <Button onClick={() => removeAllvideos(musicvideoInfo)}>
+      <Button onClick={() => removeAllvideos(musicvideoInfo)}>
         Remove all MUSIC videos from firebase
-      </Button> */}
+      </Button>
       <Button onClick={addAllLabels}>Add labels to firebase</Button>
       {/* {musicvideoInfo.map((v) => (
         <video
