@@ -66,6 +66,7 @@ const Register: React.FC<RegisterProps> = (props) => {
                       uid: user?.uid,
                       username: username,
                       created: firebase.firestore.FieldValue.serverTimestamp(),
+                      approved: false,
                     })
                     .then(() => {
                       console.log("Added " + username);

@@ -11,6 +11,8 @@ import {
   CheckOutlined,
   ExclamationOutlined,
   StarFilled,
+  HourglassOutlined,
+  StarOutlined,
 } from "@ant-design/icons";
 
 interface AppProps {
@@ -43,10 +45,29 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
       });
   };
 
+  const countComplete = (collection: any[]) => {
+    var res = 0;
+    collection.forEach((c) => {
+      if (c.complete) res++;
+    });
+    return res;
+  };
+
   const icon = (type: string) => {
     if (type === "tutorial")
       return (
-        <Tooltip title="Tutorial">
+        <Tooltip placement="right" title="Tutorial">
+          <div
+            className="icon-wrapper"
+            style={{ backgroundColor: "rgb(241, 201, 19)" }}
+          >
+            <StarOutlined style={{ color: "white" }} />
+          </div>
+        </Tooltip>
+      );
+    else if (type === "tutorialComplete")
+      return (
+        <Tooltip placement="right" title="Completed Tutorial">
           <div
             className="icon-wrapper"
             style={{ backgroundColor: "rgb(241, 201, 19)" }}
@@ -57,7 +78,7 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
       );
     else if (type === "complete")
       return (
-        <Tooltip title="Complete">
+        <Tooltip placement="right" title="Complete">
           <div className="icon-wrapper" style={{ backgroundColor: "#1a90ff" }}>
             <CheckOutlined style={{ color: "white" }} />
           </div>
@@ -65,9 +86,17 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
       );
     else if (type === "incomplete")
       return (
-        <Tooltip title="Incomplete">
+        <Tooltip placement="right" title="Incomplete">
           <div className="icon-wrapper" style={{ backgroundColor: "#777777" }}>
             <ExclamationOutlined style={{ color: "white" }} />
+          </div>
+        </Tooltip>
+      );
+    else if (type === "wait")
+      return (
+        <Tooltip placement="right" title="Waiting">
+          <div className="icon-wrapper" style={{ backgroundColor: "#777777" }}>
+            <HourglassOutlined style={{ color: "white" }} />
           </div>
         </Tooltip>
       );
@@ -75,7 +104,19 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
 
   return (
     <div className="list-container">
-      <h1 className="welcome-message">Nice to meet you, {user.displayName}!</h1>
+      <h1 style={{ fontWeight: "bold", marginTop: "50px", lineHeight: "20px" }}>
+        Nice to meet you, {user.displayName}!
+      </h1>
+      {user.approved ? (
+        <h3 style={{ marginBottom: "20px" }}>
+          You've completed {countComplete(videoCollection)}/
+          {videoCollection.length} videos
+        </h3>
+      ) : (
+        <h3 style={{ marginBottom: "20px" }}>
+          Complete tutorials and wait for approval.
+        </h3>
+      )}
       <List
         itemLayout="horizontal"
         dataSource={videoCollection}
@@ -85,39 +126,72 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
               <List.Item>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={icon("tutorial")}
+                  avatar={
+                    video.complete ? icon("tutorialComplete") : icon("tutorial")
+                  }
                   title={<Link to={"/video/" + video.id}>{video.title}</Link>}
                   description={video.author}
                 />
               </List.Item>
             );
-          else if (video.complete)
+          else if (user.approved) {
             return (
               <List.Item>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={icon("complete")}
+                  avatar={
+                    video.complete ? icon("complete") : icon("incomplete")
+                  }
                   title={<Link to={"/video/" + video.id}>{video.title}</Link>}
                   description={video.author}
                 />
-                <div>
-                  <Button onClick={() => unmark(video)}>
-                    Mark as imcomplete
-                  </Button>
-                </div>
+                {video.complete && (
+                  <div>
+                    <Button onClick={() => unmark(video)}>
+                      Mark as imcomplete
+                    </Button>
+                  </div>
+                )}
               </List.Item>
             );
-          else
+          } else {
             return (
               <List.Item>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={icon("incomplete")}
-                  title={<Link to={"/video/" + video.id}>{video.title}</Link>}
-                  description={video.author}
+                  avatar={icon("wait")}
+                  title={
+                    <Tooltip
+                      placement="bottomLeft"
+                      title="Please wait for tutorial approval"
+                    >
+                      <div
+                        style={{
+                          width: video.title.length * 5 + "px",
+                          height: "12px",
+                          margin: "4px 0",
+                          borderRadius: "1px",
+                          backgroundColor: "lightgray",
+                        }}
+                      />
+                    </Tooltip>
+                  }
+                  description={
+                    <div
+                      style={{
+                        width: video.author.length * 5 + "px",
+                        height: "8px",
+                        marginTop: "12px",
+                        marginBottom: "4px",
+                        borderRadius: "1px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                  }
                 />
               </List.Item>
             );
+          }
         }}
       />
     </div>

@@ -9,7 +9,9 @@ const Footer: React.FC<FooterProps> = () => {
       <div className="footer-text">
         If you have any problems with the system, please contact us.
         <br />
-        <a href="mailto:daeun.choi@kaist.ac.kr">daeun.choi@kaist.ac.kr</a>
+        <a href="mailto:daeun.choi@kaist.ac.kr">
+          daeun(dot)choi (at) kaist.ac.kr
+        </a>
       </div>
     </div>
   );

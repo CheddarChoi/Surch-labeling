@@ -6,7 +6,6 @@ import { RootState } from "./redux/modules";
 
 import "./labels.css";
 
-import { labels } from "./variables/label-info";
 import { setSegmentListFromDB } from "./redux/modules/segmentList";
 import { Alert, Input, Modal } from "antd";
 import { setLabelListFromDB } from "./redux/modules/labelList";
@@ -87,28 +86,6 @@ const Labels: React.FC<IProps> = (props) => {
   const setLabelonSegment = (key: string) => {
     if (selectedSegment !== "") updateLabel(selectedSegment, key);
   };
-
-  // const addAllLabels = () => {
-  //   const collection = firebase.firestore().collection("labels");
-  //   labels.forEach((label) => {
-  //     collection
-  //       .add(
-  //         Object.assign(
-  //           {
-  //             user: "global",
-  //             created: firebase.firestore.FieldValue.serverTimestamp(),
-  //           },
-  //           label
-  //         )
-  //       )
-  //       .then(() => {
-  //         console.log("Added " + label.label);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error updating document: ", error);
-  //       });
-  //   });
-  // };
 
   const addCustomLabel = (name: string, label: string, color: string) => {
     var uid = firebase.auth().currentUser?.uid;
