@@ -20,6 +20,7 @@ interface AppProps {
   user: any;
   registerNum: string;
   approved: boolean;
+  admin: boolean;
 }
 
 const VideoList: React.FC<AppProps> = ({

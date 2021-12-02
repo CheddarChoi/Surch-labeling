@@ -56,6 +56,7 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                   user={user}
                   registerNum={registerNum}
                   approved={approved}
+                  admin={false}
                 />
               )}
             />
@@ -72,7 +73,23 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                 />
               )}
             />
-            <Route path="/admin" component={Admin} />
+            {registerNum === "test" && (
+              <>
+                <Route
+                  exact
+                  path="/list"
+                  render={() => (
+                    <VideoList
+                      user={user}
+                      registerNum={registerNum}
+                      approved={approved}
+                      admin={true}
+                    />
+                  )}
+                />
+                <Route path="/admin" component={Admin} />
+              </>
+            )}
             <Redirect path="*" to="/" />
           </Switch>
           <Footer />
@@ -84,7 +101,6 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/admin" component={Admin} />
           </Switch>
           <Footer />
         </div>
