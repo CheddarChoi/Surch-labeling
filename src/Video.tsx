@@ -230,20 +230,35 @@ const Video: React.FC<IProps> = ({
           onMouseEnter={setControlVisible}
           onMouseLeave={setControlInvisible}
         >
-          <video
-            loop={false}
-            muted={false}
-            ref={ref}
-            playsInline={true}
-            onClick={onPlayIconClick}
-            onLoadedMetadata={handleLoadedMDN}
-            crossOrigin="Anonymous"
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <source src={videoSrc} type="video/mp4" />
-          </video>
+          {parseInt(videoid.slice(-3)) > 135 ? (
+            <video
+              src={videoSrc}
+              loop={false}
+              muted={false}
+              ref={ref}
+              playsInline={true}
+              onClick={onPlayIconClick}
+              onLoadedMetadata={handleLoadedMDN}
+              style={{
+                cursor: "pointer",
+              }}
+            />
+          ) : (
+            <video
+              loop={false}
+              muted={false}
+              ref={ref}
+              playsInline={true}
+              onClick={onPlayIconClick}
+              onLoadedMetadata={handleLoadedMDN}
+              crossOrigin="Anonymous"
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          )}
           <Controlbar
             onProgressChange={onProgressChange}
             onPlayIconClick={onPlayIconClick}
