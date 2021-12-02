@@ -19,9 +19,15 @@ interface AppProps {
   history?: any;
   user: any;
   registerNum: string;
+  approved: boolean;
 }
 
-const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
+const VideoList: React.FC<AppProps> = ({
+  history,
+  user,
+  registerNum,
+  approved,
+}) => {
   const videoCollection = useSelector(
     (state: RootState) => state.setVideoCollection.videoCollection
   );
@@ -107,7 +113,7 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
       <h1 style={{ fontWeight: "bold", marginTop: "50px", lineHeight: "20px" }}>
         Nice to meet you, {user.displayName}!
       </h1>
-      {user.approved ? (
+      {approved ? (
         <h3 style={{ marginBottom: "20px" }}>
           You've completed {countComplete(videoCollection)}/
           {videoCollection.length} videos
@@ -134,7 +140,7 @@ const VideoList: React.FC<AppProps> = ({ history, user, registerNum }) => {
                 />
               </List.Item>
             );
-          else if (user.approved) {
+          else if (approved) {
             return (
               <List.Item>
                 <List.Item.Meta

@@ -16,6 +16,7 @@ interface AppRouterProps {
 
 const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
   const [user, setUser] = useState<any>("");
+  const [approved, setApproved] = useState<boolean>(false);
   const [registerNum, setRegisterNum] = useState<string>("");
 
   auth?.onAuthStateChanged((user) => {
@@ -26,7 +27,8 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
         .where("uid", "==", user.uid)
         .get()
         .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
+          querySnapshot.forEach((doc: any) => {
+            setApproved(doc.data().approved);
             const registerNum = doc.id;
             setRegisterNum(registerNum);
           });
@@ -49,7 +51,13 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
             <Route
               exact
               path="/"
-              render={() => <VideoList user={user} registerNum={registerNum} />}
+              render={() => (
+                <VideoList
+                  user={user}
+                  registerNum={registerNum}
+                  approved={approved}
+                />
+              )}
             />
             <Route
               exact
