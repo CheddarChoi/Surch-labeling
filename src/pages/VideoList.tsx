@@ -115,8 +115,8 @@ const VideoList: React.FC<AppProps> = ({
       </h1>
       {approved ? (
         <h3 style={{ marginBottom: "20px" }}>
-          You've completed {countComplete(videoCollection)}/
-          {videoCollection.length} videos
+          You've completed {countComplete(videoCollection) - 3}/
+          {videoCollection.length - 3} videos
         </h3>
       ) : (
         <h3 style={{ marginBottom: "20px" }}>

@@ -8,6 +8,7 @@ import { labels } from "../variables/label-info";
 // import videoInfo from "../assets/videoInfo.json";
 import videoInfo from "../assets/videoInfo.json";
 import musicvideoInfo from "../assets/musicvideoinfo.json";
+import tutorialvideoInfo from "../assets/tutorialvideoinfo.json";
 
 interface AdminProps {
   history?: any;
@@ -39,7 +40,7 @@ const addAllVideos = (videoInfo: any[]) => {
   const collection = firebase.firestore().collection("videos");
   videoInfo.forEach((v) => {
     var assign = v.assign;
-    // if (typeof v.assign === "number") assign = v.assign.toString();
+    if (typeof v.assign === "number") assign = v.assign.toString();
     collection
       .doc(v.id)
       .set({
@@ -75,6 +76,9 @@ const Admin: React.FC<AdminProps> = (props) => {
       </Button>
       <Button onClick={() => addAllVideos(musicvideoInfo)}>
         Add MUSIC videos to firebase
+      </Button>
+      <Button onClick={() => addAllVideos(tutorialvideoInfo)}>
+        Add tutorial videos to firebase
       </Button>
       {/* <Button onClick={() => removeAllvideos(musicvideoInfo)}>
         Remove all MUSIC videos from firebase

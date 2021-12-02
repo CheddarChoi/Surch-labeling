@@ -53,9 +53,16 @@ interface AppProps {
   match?: any;
   user: any;
   registerNum: string;
+  approved: boolean;
 }
 
-const App: React.FC<AppProps> = ({ history, match, user, registerNum }) => {
+const App: React.FC<AppProps> = ({
+  history,
+  match,
+  user,
+  registerNum,
+  approved,
+}) => {
   const [open, setOpen] = useState(false);
 
   const classes = useStyles();
@@ -93,6 +100,7 @@ const App: React.FC<AppProps> = ({ history, match, user, registerNum }) => {
               videoid={videoid}
               user={user}
               registerNum={registerNum}
+              approved={approved}
             />
           </div>
           <div>

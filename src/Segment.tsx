@@ -18,6 +18,7 @@ import AnswerSegment from "./AnswerSegment";
 interface IProps {
   totalTime: number;
   videoid: string;
+  approved: boolean;
 }
 
 const Segment: React.FC<IProps> = (props) => {
@@ -246,7 +247,7 @@ const Segment: React.FC<IProps> = (props) => {
 
   return (
     <div className="segment-container">
-      {isTutorial && (
+      {isTutorial && props.approved && (
         <div
           style={{
             width: "100%",
@@ -343,7 +344,10 @@ const Segment: React.FC<IProps> = (props) => {
           {answer && (
             <>
               <div style={{ width: "100%", margin: "10px 0" }} />
-              <AnswerSegment totalTime={props.totalTime} videoid={"video001"} />
+              <AnswerSegment
+                totalTime={props.totalTime}
+                videoid={props.videoid.split("-")[1]}
+              />
             </>
           )}
           {/* <div

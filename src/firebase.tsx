@@ -23,8 +23,8 @@ const firebaseConfig = {
   measurementId: "G-C7KXD5505L",
 };
 
-firebase.initializeApp(devFirebaseConfig);
-// firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(devFirebaseConfig);
+firebase.initializeApp(firebaseConfig);
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
 // export const firestore = firebase.firestore();

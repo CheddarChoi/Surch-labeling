@@ -22,6 +22,7 @@ interface IProps {
   src: string;
   user: any;
   registerNum: string;
+  approved: boolean;
 }
 
 const Video: React.FC<IProps> = ({
@@ -30,6 +31,7 @@ const Video: React.FC<IProps> = ({
   videoid,
   user,
   registerNum,
+  approved,
 }) => {
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
@@ -303,7 +305,7 @@ const Video: React.FC<IProps> = ({
           />
         </div>
       </div>
-      <Segment totalTime={totalTime} videoid={videoid} />
+      <Segment totalTime={totalTime} videoid={videoid} approved={approved} />
       <br />
       {segmentCompleted(segmentList) && (
         <div style={{ width: "100%" }}>

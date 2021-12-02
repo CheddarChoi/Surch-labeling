@@ -68,6 +68,7 @@ const AppRouter: React.FC<AppRouterProps> = ({ history }) => {
                   registerNum={registerNum}
                   match={match}
                   history={history}
+                  approved={approved}
                 />
               )}
             />
