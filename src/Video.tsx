@@ -199,6 +199,24 @@ const Video: React.FC<IProps> = ({
           }
         }
       }
+    } else if (event.key === "Left" || event.key === "ArrowLeft") {
+      if (!showControl) {
+        setShowControl(true);
+      }
+      if (videoElement) {
+        const playingTime = videoElement.currentTime - 10;
+        setVideoTime(playingTime);
+        videoElement.currentTime = playingTime;
+      }
+    } else if (event.key === "Right" || event.key === "ArrowRight") {
+      if (!showControl) {
+        setShowControl(true);
+      }
+      if (videoElement) {
+        const playingTime = videoElement.currentTime + 10;
+        setVideoTime(playingTime);
+        videoElement.currentTime = playingTime;
+      }
     }
   };
 
