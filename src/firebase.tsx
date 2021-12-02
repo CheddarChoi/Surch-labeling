@@ -3,7 +3,7 @@ require("firebase/auth");
 require("firebase/firestore");
 require("firebase/storage");
 
-const firebaseConfig = {
+const devFirebaseConfig = {
   apiKey: "AIzaSyBhKuSCJuDF0RDVoaDXEbmRkQK3q9Dj1p8",
   authDomain: "kixlab-surch.firebaseapp.com",
   projectId: "kixlab-surch",
@@ -13,7 +13,7 @@ const firebaseConfig = {
   measurementId: "G-0MG5CWS0WD",
 };
 
-const firebaseConfig2 = {
+const firebaseConfig = {
   apiKey: "AIzaSyDF-WnJ8tpns_uBQABDdauZmaTsvkwHJ-8",
   authDomain: "kixlab-surch-music.firebaseapp.com",
   projectId: "kixlab-surch-music",
@@ -23,8 +23,8 @@ const firebaseConfig2 = {
   measurementId: "G-C7KXD5505L",
 };
 
+firebase.initializeApp(devFirebaseConfig);
 // firebase.initializeApp(firebaseConfig);
-firebase.initializeApp(firebaseConfig2);
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
 // export const firestore = firebase.firestore();

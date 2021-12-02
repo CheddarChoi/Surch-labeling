@@ -230,7 +230,8 @@ const Video: React.FC<IProps> = ({
           onMouseEnter={setControlVisible}
           onMouseLeave={setControlInvisible}
         >
-          {parseInt(videoid.slice(-3)) > 135 ? (
+          {videoid.substring(0, 3) === "vid" &&
+          parseInt(videoid.slice(-3)) > 135 ? (
             <video
               src={videoSrc}
               loop={false}
