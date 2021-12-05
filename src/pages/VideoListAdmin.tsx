@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ import {
   StarFilled,
   HourglassOutlined,
   StarOutlined,
+  CheckCircleFilled,
 } from "@ant-design/icons";
 
 interface AppProps {
@@ -32,6 +33,22 @@ const VideoListAdmin: React.FC<AppProps> = ({
     (state: RootState) => state.setVideoCollection.videoCollection
   );
   const dispatch = useDispatch();
+
+  const [userList, setUserList] = useState<any[]>([]);
+
+  useEffect(() => {
+    var list: any[] = [];
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          list.push(Object.assign({}, { id: doc.id }, doc.data()));
+        });
+        setUserList(list);
+      });
+  }, []);
 
   useEffect(() => {
     dispatch(setvideoCollectionFromDB(registerNum));
@@ -131,9 +148,24 @@ const VideoListAdmin: React.FC<AppProps> = ({
           const videoList = videoCollection.filter(
             (v: any) => v.assign === user
           );
+          const approved = userList.find((u) => u.id === user)?.approved;
           const status = countComplete(videoList) + "/" + videoList.length;
           return (
-            <Collapse.Panel header={user + " (" + status + ")"} key={i}>
+            <Collapse.Panel
+              header={
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {user + " (" + status + ")"}
+                  {approved && (
+                    <Tooltip title="Approved User">
+                      <CheckCircleFilled
+                        style={{ color: "#1890ff", marginLeft: "5px" }}
+                      />
+                    </Tooltip>
+                  )}
+                </div>
+              }
+              key={i}
+            >
               <List
                 itemLayout="horizontal"
                 dataSource={videoList}
