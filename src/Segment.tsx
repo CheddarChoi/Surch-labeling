@@ -114,7 +114,12 @@ const Segment: React.FC<IProps> = (props) => {
       segmentList.forEach((segment: any) => {
         console.log(segment);
 
-        if (segment.startTime < timestamp && segment.endTime > timestamp) {
+        if (
+          segment.startTime < timestamp &&
+          segment.endTime > timestamp &&
+          segment.endTime - timestamp > 5 &&
+          timestamp - segment.startTime > 5
+        ) {
           console.log(segment);
           collection
             .add({
@@ -137,11 +142,18 @@ const Segment: React.FC<IProps> = (props) => {
                 })
                 .catch((error) => {
                   console.error("Error updating document: ", error);
+                  setDivideLocked(false);
+                  setLoading(false);
                 });
             })
             .catch((error) => {
               console.error("Error updating document: ", error);
+              setDivideLocked(false);
+              setLoading(false);
             });
+        } else {
+          setDivideLocked(false);
+          setLoading(false);
         }
       });
     }
