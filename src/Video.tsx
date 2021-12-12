@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import NoteTaking from "./note-taking";
 import Labels from "./Labels";
 import Controlbar from "./Controlbar";
-import { Button, Modal, Slider, Tooltip } from "antd";
+import { Button, Modal, Slider, Tooltip, Spin, Alert } from "antd";
 import "./Video.css";
 import { useVideoElement } from "./VideoElementContext";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,6 +33,7 @@ const Video: React.FC<IProps> = ({
   registerNum,
   approved,
 }) => {
+  const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState(false);
   const [showControl, setShowControl] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
@@ -79,6 +80,7 @@ const Video: React.FC<IProps> = ({
 
   const startTime = Math.floor(videoTime);
   const handleLoadedMDN = (e: any) => {
+    setLoading(false);
     setTotalTime(e.target.duration);
     dispatch(setDTime(e.target.duration));
     dispatch(setRange(0, e.target.duration));
@@ -243,123 +245,129 @@ const Video: React.FC<IProps> = ({
   };
 
   return (
-    <div className="wrapper">
-      <div className="video-and-label-container">
-        <div
-          className="video-player-container"
-          onMouseEnter={setControlVisible}
-          onMouseLeave={setControlInvisible}
-        >
-          {videoid.substring(0, 3) === "vid" &&
-          parseInt(videoid.slice(-3)) > 135 ? (
-            <video
-              src={videoSrc}
-              loop={false}
-              muted={false}
-              ref={ref}
-              playsInline={true}
-              onClick={onPlayIconClick}
-              onLoadedMetadata={handleLoadedMDN}
-              style={{
-                cursor: "pointer",
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          ) : (
-            <video
-              loop={false}
-              muted={false}
-              ref={ref}
-              playsInline={true}
-              onClick={onPlayIconClick}
-              onLoadedMetadata={handleLoadedMDN}
-              crossOrigin="Anonymous"
-              style={{
-                cursor: "pointer",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-          )}
-          <Controlbar
-            onProgressChange={onProgressChange}
-            onPlayIconClick={onPlayIconClick}
-            totalTime={totalTime}
-            startTime={startTime}
-            showControl={showControl}
-            nowPlaying={nowPlaying}
-            videoElement={videoElement}
-          />
-        </div>
-        <div className="label-or-note">
-          <div className="note-and-slider-container">
-            <div className="slider-container">
-              <h3>Video Speed</h3>
-              <Slider
-                id="playbackslider"
-                marks={marks}
-                step={null}
-                defaultValue={1}
-                max={5}
-                onChange={(value: any) => setPlaybackRate(value)}
+    <Spin tip="Loading..." spinning={loading}>
+      <div className="wrapper">
+        <div className="video-and-label-container">
+          <div
+            className="video-player-container"
+            onMouseEnter={setControlVisible}
+            onMouseLeave={setControlInvisible}
+          >
+            {videoid.substring(0, 3) === "vid" &&
+            parseInt(videoid.slice(-3)) > 135 ? (
+              <video
+                src={videoSrc}
+                loop={false}
+                muted={false}
+                ref={ref}
+                playsInline={true}
+                onClick={onPlayIconClick}
+                onLoadedMetadata={handleLoadedMDN}
+                style={{
+                  cursor: "pointer",
+                  width: "100%",
+                  height: "100%",
+                }}
               />
-            </div>
+            ) : (
+              <video
+                loop={false}
+                muted={false}
+                ref={ref}
+                playsInline={true}
+                onClick={onPlayIconClick}
+                onLoadedMetadata={handleLoadedMDN}
+                crossOrigin="Anonymous"
+                style={{
+                  cursor: "pointer",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <source src={videoSrc} type="video/mp4" />
+              </video>
+            )}
+            <Controlbar
+              onProgressChange={onProgressChange}
+              onPlayIconClick={onPlayIconClick}
+              totalTime={totalTime}
+              startTime={startTime}
+              showControl={showControl}
+              nowPlaying={nowPlaying}
+              videoElement={videoElement}
+            />
           </div>
-          <NoteTaking
-            ref={noteTakingRef}
-            videoid={videoid}
-            userId={
-              firebase.auth().currentUser
-                ? firebase.auth().currentUser?.email!.split("@")[0]!
-                : "TestUser"
-            }
-            nowPlaying={setNowPlaying}
-            setIsFocused={seteditorIsFocused}
-            setonEdit={setonEdit}
-          />
-          <Labels
-            totalTime={totalTime}
-            setIsFocused={seteditorIsFocused}
-            videoid={videoid}
-          />
+          <div className="label-or-note">
+            <div className="note-and-slider-container">
+              <div className="slider-container">
+                <h3>Video Speed</h3>
+                <Slider
+                  id="playbackslider"
+                  marks={marks}
+                  step={null}
+                  defaultValue={1}
+                  max={5}
+                  onChange={(value: any) => setPlaybackRate(value)}
+                />
+              </div>
+            </div>
+            <NoteTaking
+              ref={noteTakingRef}
+              videoid={videoid}
+              userId={
+                firebase.auth().currentUser
+                  ? firebase.auth().currentUser?.email!.split("@")[0]!
+                  : "TestUser"
+              }
+              nowPlaying={setNowPlaying}
+              setIsFocused={seteditorIsFocused}
+              setonEdit={setonEdit}
+            />
+            <Labels
+              totalTime={totalTime}
+              setIsFocused={seteditorIsFocused}
+              videoid={videoid}
+            />
+          </div>
         </div>
+        <Segment totalTime={totalTime} videoid={videoid} approved={approved} />
+        <br />
+        {segmentCompleted(segmentList) && (
+          <div style={{ width: "100%" }}>
+            <Tooltip title="Complete labeling for this video">
+              <Button
+                style={{
+                  display: "flex",
+                  marginLeft: "auto",
+                  marginRight: "0",
+                }}
+                type="primary"
+                onClick={setComplete}
+              >
+                Complete
+                <ArrowForward />
+              </Button>
+            </Tooltip>
+          </div>
+        )}
+        <Modal
+          visible={isModalVisible}
+          title="Complete!"
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Keep labeling
+            </Button>,
+            <Button key="submit" type="primary">
+              <Link to="/">Go to main page</Link>
+            </Button>,
+          ]}
+        >
+          <p>Thank you for labeling!</p>
+        </Modal>
       </div>
-      <Segment totalTime={totalTime} videoid={videoid} approved={approved} />
-      <br />
-      {segmentCompleted(segmentList) && (
-        <div style={{ width: "100%" }}>
-          <Tooltip title="Complete labeling for this video">
-            <Button
-              style={{ display: "flex", marginLeft: "auto", marginRight: "0" }}
-              type="primary"
-              onClick={setComplete}
-            >
-              Complete
-              <ArrowForward />
-            </Button>
-          </Tooltip>
-        </div>
-      )}
-      <Modal
-        visible={isModalVisible}
-        title="Complete!"
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Keep labeling
-          </Button>,
-          <Button key="submit" type="primary">
-            <Link to="/">Go to main page</Link>
-          </Button>,
-        ]}
-      >
-        <p>Thank you for labeling!</p>
-      </Modal>
-    </div>
+    </Spin>
   );
 };
 
