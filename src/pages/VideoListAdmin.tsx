@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/modules";
 import { setvideoCollectionFromDB } from "../redux/modules/videoCollection";
-import { List, Button, Tooltip, Collapse } from "antd";
+import { List, Button, Tooltip, Collapse, Checkbox, Select } from "antd";
 
 import "./videoList.css";
 import {
@@ -35,6 +35,8 @@ const VideoListAdmin: React.FC<AppProps> = ({
   const dispatch = useDispatch();
 
   const [userList, setUserList] = useState<any[]>([]);
+  const [checkedVideoList, setCheckedVideoList] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<string>("");
 
   useEffect(() => {
     var list: any[] = [];
@@ -84,53 +86,108 @@ const VideoListAdmin: React.FC<AppProps> = ({
     return users;
   };
 
-  const icon = (type: string) => {
-    if (type === "tutorial")
-      return (
-        <Tooltip placement="right" title="Tutorial">
-          <div
-            className="icon-wrapper"
-            style={{ backgroundColor: "rgb(241, 201, 19)" }}
-          >
-            <StarOutlined style={{ color: "white" }} />
-          </div>
-        </Tooltip>
-      );
-    else if (type === "tutorialComplete")
-      return (
-        <Tooltip placement="right" title="Completed Tutorial">
-          <div
-            className="icon-wrapper"
-            style={{ backgroundColor: "rgb(241, 201, 19)" }}
-          >
-            <StarFilled style={{ color: "white" }} />
-          </div>
-        </Tooltip>
-      );
-    else if (type === "complete")
-      return (
-        <Tooltip placement="right" title="Complete">
-          <div className="icon-wrapper" style={{ backgroundColor: "#1a90ff" }}>
-            <CheckOutlined style={{ color: "white" }} />
-          </div>
-        </Tooltip>
-      );
-    else if (type === "incomplete")
-      return (
-        <Tooltip placement="right" title="Incomplete">
-          <div className="icon-wrapper" style={{ backgroundColor: "#777777" }}>
-            <ExclamationOutlined style={{ color: "white" }} />
-          </div>
-        </Tooltip>
-      );
-    else if (type === "wait")
-      return (
-        <Tooltip placement="right" title="Waiting">
-          <div className="icon-wrapper" style={{ backgroundColor: "#777777" }}>
-            <HourglassOutlined style={{ color: "white" }} />
-          </div>
-        </Tooltip>
-      );
+  const onCheckboxChange = (checked: boolean, videoid: string) => {
+    if (checked)
+      setCheckedVideoList((checkedVideoList) => [...checkedVideoList, videoid]);
+    else setCheckedVideoList(checkedVideoList.filter((v) => v !== videoid));
+  };
+
+  const onSelectChange = (value: any) => {
+    setSelectedUser(value);
+  };
+
+  const createDuplicate = () => {
+    // console.log("Assign video ");
+    // console.log(checkedVideoList);
+    // console.log("To");
+    // console.log(selectedUser);
+
+    if (selectedUser !== "") {
+      const collection = firebase.firestore().collection("videos");
+      checkedVideoList.forEach((videoid) => {
+        collection
+          .doc(videoid)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              const v: any = doc.data();
+              collection
+                .doc(videoid + "-2")
+                .set({
+                  assign: selectedUser,
+                  author: v.author,
+                  complete: false,
+                  src: v.src,
+                  title: v.title + " [reassigned]",
+                })
+                .then(() => {
+                  console.log("Added " + videoid + "-2");
+                });
+            }
+          });
+      });
+    }
+  };
+
+  const icon = (type: string, videoid: string) => {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Checkbox
+          onChange={(e) => onCheckboxChange(e.target.checked, videoid)}
+          style={{ marginRight: "10px" }}
+        />
+        {type === "tutorial" && (
+          <Tooltip placement="right" title="Tutorial">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "rgb(241, 201, 19)" }}
+            >
+              <StarOutlined style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
+        {type === "tutorialComplete" && (
+          <Tooltip placement="right" title="Completed Tutorial">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "rgb(241, 201, 19)" }}
+            >
+              <StarFilled style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
+        {type === "complete" && (
+          <Tooltip placement="right" title="Complete">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "#1a90ff" }}
+            >
+              <CheckOutlined style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
+        {type === "incomplete" && (
+          <Tooltip placement="right" title="Incomplete">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "#777777" }}
+            >
+              <ExclamationOutlined style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
+        {type === "wait" && (
+          <Tooltip placement="right" title="Waiting">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "#777777" }}
+            >
+              <HourglassOutlined style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -143,6 +200,32 @@ const VideoListAdmin: React.FC<AppProps> = ({
         {countComplete(videoCollection)}/{videoCollection.length} videos
         completed
       </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          marginBottom: "10px",
+        }}
+      >
+        <h3 style={{ marginRight: "10px", marginBottom: "0" }}>
+          Duplicate selected <b>{checkedVideoList.length} videos</b> and assign
+          to{" "}
+        </h3>
+        <Select
+          style={{ marginRight: "10px", width: 120 }}
+          defaultValue="user"
+          onChange={onSelectChange}
+        >
+          {userList.map((u) => (
+            <Select.Option value={u.id}>{u.id}</Select.Option>
+          ))}
+        </Select>
+        <Button type="primary" onClick={createDuplicate}>
+          Create Duplicate
+        </Button>
+      </div>
+
       <Collapse>
         {allUsers(videoCollection).map((user, i) => {
           const videoList = videoCollection.filter(
@@ -177,8 +260,8 @@ const VideoListAdmin: React.FC<AppProps> = ({
                           style={{ alignItems: "center" }}
                           avatar={
                             video.complete
-                              ? icon("tutorialComplete")
-                              : icon("tutorial")
+                              ? icon("tutorialComplete", video.id)
+                              : icon("tutorial", video.id)
                           }
                           title={
                             <Link to={"/video/" + video.id}>{video.title}</Link>
@@ -194,8 +277,8 @@ const VideoListAdmin: React.FC<AppProps> = ({
                           style={{ alignItems: "center" }}
                           avatar={
                             video.complete
-                              ? icon("complete")
-                              : icon("incomplete")
+                              ? icon("complete", video.id)
+                              : icon("incomplete", video.id)
                           }
                           title={
                             <Link to={"/video/" + video.id}>{video.title}</Link>
@@ -216,7 +299,7 @@ const VideoListAdmin: React.FC<AppProps> = ({
                       <List.Item>
                         <List.Item.Meta
                           style={{ alignItems: "center" }}
-                          avatar={icon("wait")}
+                          avatar={icon("wait", video.id)}
                           title={
                             <Tooltip
                               placement="bottomLeft"
