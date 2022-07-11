@@ -13,6 +13,16 @@ const devFirebaseConfig = {
   measurementId: "G-0MG5CWS0WD",
 };
 
+const labelingFirebaseConfig = {
+  apiKey: "AIzaSyBaGWRUFXnBMn6hnk1urnGgiprz3szp5EQ",
+  authDomain: "surch-labeling.firebaseapp.com",
+  projectId: "surch-labeling",
+  storageBucket: "surch-labeling.appspot.com",
+  messagingSenderId: "245048790207",
+  appId: "1:245048790207:web:1f4f746e4329dd11168a0a",
+  measurementId: "G-HRZQTN4VGR",
+};
+
 const firebaseConfig = {
   apiKey: "AIzaSyDF-WnJ8tpns_uBQABDdauZmaTsvkwHJ-8",
   authDomain: "kixlab-surch-music.firebaseapp.com",
@@ -24,7 +34,8 @@ const firebaseConfig = {
 };
 
 // firebase.initializeApp(devFirebaseConfig);
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(labelingFirebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
 // export const firestore = firebase.firestore();

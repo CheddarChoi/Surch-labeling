@@ -1,37 +1,192 @@
 [
   {
-    "assign": "",
-    "id": "video351",
-    "title": "Live robotic prostatectomy: WRSE Live Surgery Event Oct 15",
+    "id": "video011",
+    "title": "Declan Murphy Live Robotic Prostatectomy #WRSE24 May 2016",
     "author": "Declan Murphy",
-    "src": "http://dg1fmc8qbela5.cloudfront.net/video351.mp4"
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video011.mp4",
+    "year": "2014",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
   },
   {
-    "assign": "",
-    "id": "video352",
-    "title": "LIve Robotic Prostatectomy | Previous proctocolectomy |WRSE June 17",
-    "author": "Declan Murphy",
-    "src": "http://dg1fmc8qbela5.cloudfront.net/video352.mp4"
+    "id": "video019",
+    "title": "Dr. Patel- Robotic-assisted Radical Prostatectomy- Nerve Sparing technique.",
+    "author": "Robotic Surgery Academy",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video019.mp4",
+    "year": "2019",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
   },
   {
-    "assign": "",
-    "id": "video353",
-    "title": "Intuitive using Bang for MD to MD collaboration robotic prostatectomy",
-    "author": "BangSurgical",
-    "src": "http://dg1fmc8qbela5.cloudfront.net/video353.mp4"
+    "id": "video031",
+    "title": "laparoscopic extraperitoneal radical prostatectomy in a patient with previous hormone treatment",
+    "author": "ΝΙΚΟΛΑΟΣ ΦΕΡΑΚΗΣ",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video031.mp4",
+    "year": "2015",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
   },
   {
-    "assign": "",
-    "id": "video354",
-    "title": "Dr. Mani Menon: Step by Step Radical Prostatectomy",
-    "author": "Vattikuti Foundation",
-    "src": "http://dg1fmc8qbela5.cloudfront.net/video354.mp4"
+    "id": "video130",
+    "title": "lap radical prostatectomy part 2",
+    "author": "lap radical prostatectomy part 2",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video130.mp4",
+    "year": "2017",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
   },
   {
-    "assign": "",
-    "id": "video355",
-    "title": "Robotic prostatectomy in a patient with lower limb blood clots and a hernia repair with mesh",
-    "author": "Shaheen Alanee",
-    "src": "http://dg1fmc8qbela5.cloudfront.net/video355.mp4"
+    "id": "video141",
+    "title": "CILR 2016 - Franco Gaboardi & Bernardo Rocco - Robotic extrafascial prostatectomy",
+    "author": "Fondazione Vincenzo Pansadoro",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video141.mp4",
+    "year": "2016",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video159",
+    "title": "Laparoscopic prostatectomy and pelvic lymphadenectomy - E. Mandron",
+    "author": "Fondazione Vincenzo Pansadoro",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video159.mp4",
+    "year": "2017",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video193",
+    "title": "CILR 2008 - Roland Van Velthoven - Transperitoneal radical prostatectomy",
+    "author": "Fondazione Vincenzo Pansadoro",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video193.mp4",
+    "year": "2008",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video244",
+    "title": "Robotic Nerve-sparing Radical Prostatectomy Part 1",
+    "author": "UrologyHawaii",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video244.mp4",
+    "year": "2013",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video246",
+    "title": "Seventh surgery",
+    "author": "Robotic prostate cancer surgery by Professor Ren",
+    "src": "http://dg1fmc8qbela5.cloudfront.net/video246.mp4",
+    "year": "2021",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video301",
+    "title": "Surgeon 093 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_093_video_04_03/1548951652/surgeon_093_video_04_03-1080p.mp4",
+    "year": "2017",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video306",
+    "title": "Surgeon 099 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_099_video_01_2015/1550181599/surgeon_099_video_01_2015-720p.mp4",
+    "year": "2015",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video311",
+    "title": "Surgeon 067 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_067_video_05_07/1548878650/surgeon_067_video_05_07-1080p.mp4",
+    "year": "2017",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video316",
+    "title": "Surgeon 093 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_093_video_11_3/1550178257/surgeon_093_video_11_3-1080p.mp4",
+    "year": "2018",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video321",
+    "title": "Surgeon 075 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_075_video_01_7/1550165257/surgeon_075_video_01_7-1080p.mp4",
+    "year": "2014",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video326",
+    "title": "Surgeon 093 – Difficult RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_093_video_06_3/1548951652/surgeon_093_video_06_3-720p.mp4",
+    "year": "2017",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video331",
+    "title": "Surgeon 075 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_075_video_02_6/1548882058/surgeon_075_video_02_6-1080p.mp4",
+    "year": "2018",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video336",
+    "title": "Surgeon 055 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_055_video_01_10/1548870642/surgeon_055_video_01_10-1080p.mp4",
+    "year": "2014",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0002"
+  },
+  {
+    "id": "video341",
+    "title": "Surgeon 063 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_063_video_01_8/1548870642/surgeon_063_video_01_8-1080p.mp4",
+    "year": "2014",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
+  },
+  {
+    "id": "video346",
+    "title": "Surgeon 011 – RP",
+    "author": "musicurologyvideo",
+    "src": "//bcmmedia.s3.amazonaws.com/bcp/video/transcodes/surgeon_011_video_02_4/1550153724/surgeon_011_video_02_4-1080p.mp4",
+    "year": "2018",
+    "complete": "FALSE",
+    "relabel": "TRUE",
+    "assign": "0001"
   }
 ]

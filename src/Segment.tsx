@@ -11,7 +11,7 @@ import { setSegmentListFromDB } from "./redux/modules/segmentList";
 
 import "./segment.css";
 import toTimeString from "./totimeString";
-import { Button, Tooltip, Spin, Switch } from "antd";
+import { Button, Tooltip, Spin, Switch, Divider } from "antd";
 import { textColorByBG } from "./variables/helperfuctions";
 import AnswerSegment from "./AnswerSegment";
 
@@ -22,6 +22,9 @@ interface IProps {
 }
 
 const Segment: React.FC<IProps> = (props) => {
+  const videoCollection = useSelector(
+    (state: RootState) => state.setVideoCollection.videoCollection
+  );
   const labelList = useSelector(
     (state: RootState) => state.setLabelList.labelList
   );
@@ -42,6 +45,10 @@ const Segment: React.FC<IProps> = (props) => {
   );
 
   const dispatch = useDispatch();
+
+  const currVidInfo = videoCollection.filter(
+    (v: any) => v.id === props.videoid
+  )[0];
 
   // const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
   const [answer, setAnswer] = useState<boolean>(false);
@@ -410,6 +417,15 @@ const Segment: React.FC<IProps> = (props) => {
               </Button>
             </Tooltip>
           </div>
+        </div>
+        <Divider />
+        <div className="segments">
+          {!currVidInfo.complete && !currVidInfo.relabeling && (
+            <AnswerSegment
+              totalTime={props.totalTime}
+              videoid={props.videoid}
+            />
+          )}
         </div>
       </div>
     </div>

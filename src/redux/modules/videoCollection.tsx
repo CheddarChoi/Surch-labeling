@@ -17,7 +17,6 @@ export const setvideoCollectionFromDB =
     console.log("Get video collection from DB");
     if (registerNum === "test")
       db.collection("videos")
-        .orderBy("assign")
         .get()
         .then((querySnapshot) => {
           var collection: Object[] = [];
@@ -31,7 +30,6 @@ export const setvideoCollectionFromDB =
         });
     else
       db.collection("videos")
-        .where("assign", "==", registerNum)
         .get()
         .then((querySnapshot) => {
           var collection: Object[] = [];

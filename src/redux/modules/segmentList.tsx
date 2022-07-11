@@ -27,6 +27,8 @@ export const setSegmentListFromDB =
       if (snap.size === 0) {
         console.log("No documents!");
         console.log("Video duration: " + videoDTime);
+        // video metadata length update
+        db.collection("videos").doc(videoName).update({ length: videoDTime });
         const newSegment = {
           startTime: 0,
           endTime: videoDTime,

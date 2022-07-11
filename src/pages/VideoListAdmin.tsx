@@ -14,6 +14,7 @@ import {
   HourglassOutlined,
   StarOutlined,
   CheckCircleFilled,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 interface AppProps {
@@ -97,11 +98,6 @@ const VideoListAdmin: React.FC<AppProps> = ({
   };
 
   const createDuplicate = () => {
-    // console.log("Assign video ");
-    // console.log(checkedVideoList);
-    // console.log("To");
-    // console.log(selectedUser);
-
     if (selectedUser !== "") {
       const collection = firebase.firestore().collection("videos");
       checkedVideoList.forEach((videoid) => {
@@ -156,13 +152,23 @@ const VideoListAdmin: React.FC<AppProps> = ({
             </div>
           </Tooltip>
         )}
+        {type === "needverification" && (
+          <Tooltip placement="right" title="Complete">
+            <div
+              className="icon-wrapper"
+              style={{ backgroundColor: "#52C41A" }}
+            >
+              <CheckCircleOutlined style={{ color: "white" }} />
+            </div>
+          </Tooltip>
+        )}
         {type === "complete" && (
           <Tooltip placement="right" title="Complete">
             <div
               className="icon-wrapper"
               style={{ backgroundColor: "#1a90ff" }}
             >
-              <CheckOutlined style={{ color: "white" }} />
+              <CheckCircleFilled style={{ color: "white" }} />
             </div>
           </Tooltip>
         )}
@@ -231,7 +237,8 @@ const VideoListAdmin: React.FC<AppProps> = ({
           const videoList = videoCollection.filter(
             (v: any) => v.assign === user
           );
-          const approved = userList.find((u) => u.id === user)?.approved;
+          const approved =
+            userList.find((u) => u.id === user)?.approved || user === "";
           const status = countComplete(videoList) + "/" + videoList.length;
           return (
             <Collapse.Panel
@@ -270,7 +277,7 @@ const VideoListAdmin: React.FC<AppProps> = ({
                         />
                       </List.Item>
                     );
-                  else if (approved) {
+                  else {
                     return (
                       <List.Item>
                         <List.Item.Meta
@@ -278,7 +285,9 @@ const VideoListAdmin: React.FC<AppProps> = ({
                           avatar={
                             video.complete
                               ? icon("complete", video.id)
-                              : icon("incomplete", video.id)
+                              : video.relabeling
+                              ? icon("incomplete", video.id)
+                              : icon("needverification", video.id)
                           }
                           title={
                             <Link to={"/video/" + video.id}>{video.title}</Link>
@@ -292,43 +301,6 @@ const VideoListAdmin: React.FC<AppProps> = ({
                             </Button>
                           </div>
                         )}
-                      </List.Item>
-                    );
-                  } else {
-                    return (
-                      <List.Item>
-                        <List.Item.Meta
-                          style={{ alignItems: "center" }}
-                          avatar={icon("wait", video.id)}
-                          title={
-                            <Tooltip
-                              placement="bottomLeft"
-                              title="Please wait for tutorial approval"
-                            >
-                              <div
-                                style={{
-                                  width: video.title.length * 5 + "px",
-                                  height: "12px",
-                                  margin: "4px 0",
-                                  borderRadius: "1px",
-                                  backgroundColor: "lightgray",
-                                }}
-                              />
-                            </Tooltip>
-                          }
-                          description={
-                            <div
-                              style={{
-                                width: video.author.length * 5 + "px",
-                                height: "8px",
-                                marginTop: "12px",
-                                marginBottom: "4px",
-                                borderRadius: "1px",
-                                backgroundColor: "lightgray",
-                              }}
-                            />
-                          }
-                        />
                       </List.Item>
                     );
                   }

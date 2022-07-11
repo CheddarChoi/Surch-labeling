@@ -31,7 +31,7 @@ const AnswerSegment: React.FC<IProps> = (props) => {
       .firestore()
       .collection("videos")
       .doc(props.videoid)
-      .collection("segments")
+      .collection("prevSegments")
       .orderBy("startTime");
     ref.get().then((snap) => {
       snap.forEach((doc) => {

@@ -125,7 +125,7 @@ const Labels: React.FC<IProps> = (props) => {
           </div>
         ))}
         {/* <Button onClick={addAllLabels}>Add all labels</Button> */}
-        <div
+        {/* <div
           className="surch-label"
           style={{ backgroundColor: "#1890ff", color: "white" }}
           onClick={showModal}
@@ -168,7 +168,7 @@ const Labels: React.FC<IProps> = (props) => {
           {cautionMessage !== "" && (
             <Alert message={cautionMessage} type="error" />
           )}
-        </Modal>
+        </Modal> */}
       </div>
     </div>
   );
