@@ -53,7 +53,6 @@ const Segment: React.FC<IProps> = (props) => {
   // const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
   const [answer, setAnswer] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [divideLocked, setDivideLocked] = useState<boolean>(false);
   const isTutorial = props.videoid.includes("tutorial");
 
   const changeSegment = (id: string) => {
@@ -107,63 +106,47 @@ const Segment: React.FC<IProps> = (props) => {
   //     x >= 0 ? setIndicatorPosition(Math.round(x)) : setIndicatorPosition(0);
   // };
   const divideSegment = (timestamp: number) => {
-    console.log("divide!");
-    if (!divideLocked) {
-      setDivideLocked(true);
-      setLoading(true);
+    if (loading) return;
 
-      const collection = firebase
-        .firestore()
-        .collection("videos")
-        .doc(props.videoid)
-        .collection("segments");
+    const collection = firebase
+      .firestore()
+      .collection("videos")
+      .doc(props.videoid)
+      .collection("segments");
 
-      segmentList.forEach((segment: any) => {
-        console.log(segment);
-
-        if (
-          segment.startTime < timestamp &&
-          segment.endTime > timestamp &&
-          segment.endTime - timestamp > 5 &&
-          timestamp - segment.startTime > 5
-        ) {
-          console.log(segment);
-          collection
-            .add({
-              startTime: timestamp,
-              endTime: segment.endTime,
-              label: segment.label,
-            })
-            .then(() => {
-              console.log("Added");
-              collection
-                .doc(segment.id)
-                .update({ endTime: timestamp })
-                .then(() => {
-                  console.log("Updated");
-                  dispatch(
-                    setSegmentListFromDB(props.videoid, props.totalTime)
-                  );
-                  setDivideLocked(false);
-                  setLoading(false);
-                })
-                .catch((error) => {
-                  console.error("Error updating document: ", error);
-                  setDivideLocked(false);
-                  setLoading(false);
-                });
-            })
-            .catch((error) => {
-              console.error("Error updating document: ", error);
-              setDivideLocked(false);
-              setLoading(false);
-            });
-        } else {
-          setDivideLocked(false);
-          setLoading(false);
-        }
-      });
-    }
+    segmentList.forEach((segment: any) => {
+      if (
+        segment.startTime < timestamp &&
+        segment.endTime > timestamp &&
+        segment.endTime - timestamp > 5 &&
+        timestamp - segment.startTime > 5
+      ) {
+        setLoading(true);
+        collection
+          .add({
+            startTime: timestamp,
+            endTime: segment.endTime,
+            label: segment.label,
+          })
+          .then(() => {
+            collection
+              .doc(segment.id)
+              .update({ endTime: timestamp })
+              .then(() => {
+                dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
+                setLoading(false);
+              })
+              .catch((error) => {
+                console.error("Error updating document: ", error);
+                setLoading(false);
+              });
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+            setLoading(false);
+          });
+      }
+    });
   };
 
   const deleteSegment = (id: string, prev: boolean) => {
@@ -186,7 +169,6 @@ const Segment: React.FC<IProps> = (props) => {
             .doc(delSegment.id)
             .delete()
             .then(() => {
-              console.log("Deleted");
               dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
               dispatch(setSelected(""));
             })
@@ -203,12 +185,10 @@ const Segment: React.FC<IProps> = (props) => {
         .doc(updateSegment.id)
         .update({ endTime: delSegment.endTime })
         .then(() => {
-          console.log("Updated");
           collection
             .doc(delSegment.id)
             .delete()
             .then(() => {
-              console.log("Deleted");
               dispatch(setSegmentListFromDB(props.videoid, props.totalTime));
               dispatch(setSelected(""));
             })
@@ -303,12 +283,7 @@ const Segment: React.FC<IProps> = (props) => {
               >
                 <ScissorOutlined style={{ fontSize: "16px", color: "white" }} />
               </div>
-              {loading && (
-                <Spin
-                  size="small"
-                  style={{ position: "fixed", bottom: "0", left: "32px" }}
-                />
-              )}
+              {loading && <Spin size="small" style={{ marginTop: "0.5rem" }} />}
             </div>
           )}
         </div>
